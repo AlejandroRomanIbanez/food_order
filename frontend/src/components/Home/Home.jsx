@@ -2,6 +2,7 @@ import React from "react";
 import "./Home.css";
 import MultiItemCarousel from "./MultiItemCarousel";
 import RestaurantCard from "../Restaurant/RestaurantCard";
+import Auth from "../Auth/Auth";
 
 const restaurants = [1, 1, 1, 1, 1, 1, 1, 1];
 
@@ -32,7 +33,7 @@ const Home = () => {
         </h1>
         <div className="flex flex-wrap items-center justify-around gap-5">
           {restaurants.map((restaurant) => (
-            <RestaurantCard key={restaurant} />
+            <RestaurantCard />
           ))}
         </div>
       </section>
