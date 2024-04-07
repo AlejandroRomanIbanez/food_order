@@ -1,19 +1,6 @@
 import { isPresentInFavorites } from "../../config/logic";
-import {
-  ADD_TO_FAVORITE_REQUEST,
-  ADD_TO_FAVORITE_SUCCESS,
-  GET_USER_REQUEST,
-  LOGIN_REQUEST,
-  LOGIN_SUCCESS,
-  REGISTER_FAILURE,
-  REGISTER_REQUEST,
-  REGISTER_SUCCESS,
-  GET_USER_FAILURE,
-  LOGIN_FAILURE,
-  ADD_TO_FAVORITE_FAILURE,
-  GET_USER_SUCCESS,
-  LOGOUT,
-} from "./ActionType";
+
+import * as actionTypes from "./ActionType";
 
 const initialState = {
   user: null,
@@ -25,31 +12,31 @@ const initialState = {
 
 export const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case REGISTER_REQUEST:
-    case LOGIN_REQUEST:
-    case GET_USER_REQUEST:
-    case ADD_TO_FAVORITE_REQUEST:
+    case actionTypes.REGISTER_REQUEST:
+    case actionTypes.LOGIN_REQUEST:
+    case actionTypes.GET_USER_REQUEST:
+    case actionTypes.ADD_TO_FAVORITE_REQUEST:
       return {
         ...state,
         isLoading: true,
         error: null,
         success: null,
       };
-    case REGISTER_SUCCESS:
-    case LOGIN_SUCCESS:
+    case actionTypes.REGISTER_SUCCESS:
+    case actionTypes.LOGIN_SUCCESS:
       return {
         ...state,
         isLoading: false,
         jwt: action.payload,
         success: "Registered Successfully",
       };
-    case GET_USER_SUCCESS:
+    case actionTypes.GET_USER_SUCCESS:
       return {
         ...state,
         isLoading: false,
         user: action.payload,
       };
-    case ADD_TO_FAVORITE_SUCCESS:
+    case actionTypes.ADD_TO_FAVORITE_SUCCESS:
       return {
         ...state,
         isLoading: false,
@@ -58,13 +45,13 @@ export const authReducer = (state = initialState, action) => {
           ? state.favorites.filter((item) => item.id !== action.payload.id)
           : [action.payload, ...state.favorites],
       };
-    case LOGOUT:
+    case actionTypes.LOGOUT:
       return initialState;
 
-    case REGISTER_FAILURE:
-    case LOGIN_FAILURE:
-    case GET_USER_FAILURE:
-    case ADD_TO_FAVORITE_FAILURE:
+    case actionTypes.REGISTER_FAILURE:
+    case actionTypes.LOGIN_FAILURE:
+    case actionTypes.GET_USER_FAILURE:
+    case actionTypes.ADD_TO_FAVORITE_FAILURE:
       return {
         ...state,
         isLoading: false,
