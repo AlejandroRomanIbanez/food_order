@@ -8,7 +8,9 @@ const initialState = {
   message: null,
 };
 
-export const menuItemReducer = (state = initialState, action) => {
+const menuItemReducer = (state = initialState, action) => {
+  console.log("Action:", action.type);
+  console.log("Payload:", action.payload);
   switch (action.type) {
     case actionTypes.CREATE_MENU_ITEM_REQUEST:
     case actionTypes.GET_MENU_ITEMS_BY_RESTAURANT_ID_REQUEST:
@@ -31,11 +33,14 @@ export const menuItemReducer = (state = initialState, action) => {
       };
 
     case actionTypes.GET_MENU_ITEMS_BY_RESTAURANT_ID_SUCCESS:
-      return {
+      console.log("Old state:", state);
+      const newState = {
         ...state,
         loading: false,
         menuItems: action.payload,
       };
+      console.log("New state:", newState);
+      return newState;
 
     case actionTypes.DELETE_MENU_ITEM_SUCCESS:
       return {

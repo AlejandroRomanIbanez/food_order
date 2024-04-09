@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
+import { useSelector, useDispatch } from "react-redux";
+import { createOrder } from "./../../State/Order/Action";
 
 export const style = {
   position: "absolute",
@@ -30,12 +32,29 @@ const initialValues = {
 //   city: Yup.string().required("City is required"),
 // });
 
-const NewAddressCard = () => {
+const NewAddressCard = ({ cart }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const { auth } = useSelector((store) => store);
+  const dispatch = useDispatch();
 
   const handleSubmit = (values) => {
+    const data = {
+      jwt: localStorage.getItem("jwt"),
+      order: {
+        restaurantId: cart.cartItems[0].food?.restaurant.id,
+        deliveryAddress: {
+          fullName: auth.user?.fullName,
+          streetAddress: values.streetAddress,
+          city: values.city,
+          state: values.state,
+          pincode: values.pincode,
+          country: "Spain",
+        },
+      },
+    };
+    dispatch(createOrder(data));
     console.log("Form Values: ", values);
   };
 

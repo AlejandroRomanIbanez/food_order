@@ -1,4 +1,4 @@
-import { isPresentInFavorites } from "../../config/logic";
+import { isPresentInFavorites } from "../../components/config/logic";
 
 import * as actionTypes from "./ActionType";
 
@@ -10,7 +10,7 @@ const initialState = {
   success: null,
 };
 
-export const authReducer = (state = initialState, action) => {
+const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.REGISTER_REQUEST:
     case actionTypes.LOGIN_REQUEST:
@@ -35,6 +35,7 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         user: action.payload,
+        favorites: action.payload.favorites,
       };
     case actionTypes.ADD_TO_FAVORITE_SUCCESS:
       return {
@@ -63,3 +64,5 @@ export const authReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export default authReducer;

@@ -1,4 +1,4 @@
-import { api } from "../../config/api";
+import { api } from "../../components/config/api";
 import {
   CREATE_MENU_ITEM_FAILURE,
   CREATE_MENU_ITEM_REQUEST,
@@ -17,21 +17,23 @@ import {
   UPDATE_MENU_ITEMS_AVAILABILITY_SUCCESS,
 } from "./ActionType";
 
-export const createMenuItem = (menu, jwt) => async (dispatch) => {
-  dispatch({ type: CREATE_MENU_ITEM_REQUEST });
-  try {
-    const { data } = await api.post(`api/admin/food/`, menu, {
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-      },
-    });
-    dispatch({ type: CREATE_MENU_ITEM_SUCCESS, payload: data });
-    console.log("Created MenuItem data", data);
-  } catch (err) {
-    dispatch({ type: CREATE_MENU_ITEM_FAILURE, payload: err });
-    console.log("error", err);
-  }
-};
+export const createMenuItem =
+  ({ menu, jwt }) =>
+  async (dispatch) => {
+    dispatch({ type: CREATE_MENU_ITEM_REQUEST });
+    try {
+      const { data } = await api.post(`api/admin/food/`, menu, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+      dispatch({ type: CREATE_MENU_ITEM_SUCCESS, payload: data });
+      console.log("Created MenuItem data", data);
+    } catch (err) {
+      dispatch({ type: CREATE_MENU_ITEM_FAILURE, payload: err });
+      console.log("error", err);
+    }
+  };
 
 export const getMenuItemsByRestaurantId = (reqData) => async (dispatch) => {
   dispatch({ type: GET_MENU_ITEMS_BY_RESTAURANT_ID_REQUEST });

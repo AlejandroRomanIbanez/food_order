@@ -12,14 +12,14 @@ import { useSelector } from "react-redux";
 export const Navbar = () => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { auth } = useSelector((store) => store);
+  const { auth, cart } = useSelector((store) => store);
 
   const handleLogin = () => {
     navigate("/account/login");
   };
 
   const handleAvatarClick = () => {
-    if (auth.user?.role === "ROLE_CUSTOMER") {
+    if (auth.user?.role === "ROLE_RESTAURANT_OWNER") {
       navigate("/profile");
     } else {
       navigate("/admin/restaurants");
@@ -46,7 +46,7 @@ export const Navbar = () => {
           {auth.user ? (
             <Avatar
               onClick={handleAvatarClick}
-              cursor="pointer"
+              className="cursor-pointer"
               sx={{ bgcolor: "white", color: pink.A400 }}
             >
               {auth.user?.fullName[0].toUpperCase()}
@@ -58,9 +58,9 @@ export const Navbar = () => {
           )}
         </div>
         <div className="">
-          <IconButton>
+          <IconButton onClick={() => navigate("/cart")}>
             <Badge
-              badgeContent={3}
+              badgeContent={cart.cart?.items.length}
               sx={{
                 ".MuiBadge-badge": {
                   bgcolor: theme.palette.black.main,

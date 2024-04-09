@@ -4,10 +4,12 @@ import CartItem from "./CartItem";
 import AddressCard from "./AddressCard";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import NewAddressCard from "./NewAddressCard";
-
-const items = [1, 1, 1, 1];
+import { useSelector } from "react-redux";
 
 const Cart = () => {
+  const { cart } = useSelector((store) => store);
+  const taxCharge = 5;
+  const deliverCharge = 4;
   const createOrderUsingSelectedAddress = () => {
     console.log("createOrderUsingSelectedAddress");
   };
@@ -15,8 +17,8 @@ const Cart = () => {
     <div>
       <main className="lg:flex justify-between">
         <section className="lg:w-[30%] space-y-6 lg:min-h-screen pt-10">
-          {items.map((item) => (
-            <CartItem key={item} />
+          {cart.cartItems.map((item) => (
+            <CartItem item={item} />
           ))}
 
           <Divider />
@@ -25,21 +27,21 @@ const Cart = () => {
             <div className="space-y-3">
               <div className="flex justify-between text-gray-400">
                 <p>Item Total</p>
-                <p>43€</p>
+                <p>{cart.cart?.total}€</p>
               </div>
               <div className="flex justify-between text-gray-400">
                 <p>Deliver Fee</p>
-                <p>3€</p>
+                <p>{deliverCharge}€</p>
               </div>
               <div className="flex justify-between text-gray-400">
                 <p>Tax and Restaurant Charges</p>
-                <p>3€</p>
+                <p>{taxCharge}€</p>
               </div>
               <Divider />
             </div>
             <div className="flex justify-between text-gray-400">
               <p>Total pay</p>
-              <p>49€</p>
+              <p>{cart.cart?.total + taxCharge + deliverCharge}€</p>
             </div>
           </div>
         </section>
@@ -57,7 +59,7 @@ const Cart = () => {
                   showButton={true}
                 />
               ))}
-              <NewAddressCard />
+              <NewAddressCard cart={cart} />
             </div>
           </div>
         </section>

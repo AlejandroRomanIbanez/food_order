@@ -1,22 +1,22 @@
 import React from "react";
 import { Card, Button } from "@mui/material";
 
-const OrderCard = () => {
+const OrderCard = ({ item, order }) => {
   return (
     <Card className="flex justify-between items-center p-5">
       <div className="flex items-center space-x-5">
         <img
           className="h-16 w-16"
-          src="https://cdn.pixabay.com/photo/2023/10/08/13/03/ai-generated-8302142_960_720.jpg"
-          alt=""
+          src={item.food.images[0]}
+          alt={item.food.name}
         />
         <div>
-          <p>Burguer</p>
-          <p>49€</p>
+          <p>{item.food.name}</p>
+          <p>{item.totalPrice}€</p>
         </div>
       </div>
       <div>
-        <Button sx={{ cursor: "not-allowed" }}>Completed</Button>
+        <Button sx={{ cursor: "not-allowed" }}>{order.orderStatus}</Button>
       </div>
     </Card>
   );

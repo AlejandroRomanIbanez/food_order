@@ -9,10 +9,16 @@ import {
 } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MenuCard from "./MenuCard";
-
-const categories = ["Pizza", "Burguer", "Sandwich", "Sushi", "Dessert"];
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import {
+  getRestaurantById,
+  getRestaurantsCategory,
+} from "../../State/Restaurant/Action";
+import { getMenuItemsByRestaurantId } from "../../State/Menu/Action";
 
 const foodTypes = [
   {
@@ -33,14 +39,42 @@ const foodTypes = [
   },
 ];
 
-const menu = [1, 1, 1, 1, 1, 1];
-
 const RestaurantDetails = () => {
   const [foodType, setFoodType] = useState("all");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const jwt = localStorage.getItem("jwt");
+  const { auth, restaurant, menu } = useSelector((store) => store);
+  const { id, city } = useParams();
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const handleFilter = (event) => {
+    setFoodType(event.target.value);
     console.log(event.target.value, event.target.name);
   };
+
+  const handleFilterCategory = (event, value) => {
+    setSelectedCategory(value);
+    console.log(event.target.value, event.target.name, value);
+  };
+
+  useEffect(() => {
+    dispatch(
+      getMenuItemsByRestaurantId({
+        restaurantId: id,
+        jwt,
+        vegetarian: foodType === "vegetarian",
+        nonveg: foodType === "non-vegetarian",
+        seasonal: foodType === "seasonal",
+        foodCategory: selectedCategory,
+      })
+    );
+  }, [selectedCategory, foodType]);
+
+  useEffect(() => {
+    dispatch(getRestaurantById({ restaurantId: id, jwt }));
+    dispatch(getRestaurantsCategory({ restaurantId: id, jwt }));
+  }, []);
 
   return (
     <div className="px-5 lg:px-20">
@@ -53,33 +87,32 @@ const RestaurantDetails = () => {
             <Grid item xs={12}>
               <img
                 className="w-full h-[40vh] object-cover"
-                src="https://images.pexels.com/photos/18090414/pexels-photo-18090414/free-photo-of-decoration-in-restaurant.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                src={restaurant?.restaurant?.images[0]}
                 alt=""
               />
             </Grid>
             <Grid item xs={12} lg={6}>
               <img
                 className="w-full h-[40vh] object-cover"
-                src="https://images.pexels.com/photos/18090414/pexels-photo-18090414/free-photo-of-decoration-in-restaurant.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                src={restaurant?.restaurant?.images[1]}
                 alt=""
               />
             </Grid>
             <Grid item xs={12} lg={6}>
               <img
                 className="w-full h-[40vh] object-cover"
-                src="https://images.pexels.com/photos/18090414/pexels-photo-18090414/free-photo-of-decoration-in-restaurant.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                src={restaurant?.restaurant?.images[2]}
                 alt=""
               />
             </Grid>
           </Grid>
         </div>
         <div className="pt-3 pb-5">
-          <h1 className="text-4xl font-semibold">Indian Fast Food</h1>
+          <h1 className="text-4xl font-semibold">
+            {restaurant.restaurant?.name}
+          </h1>
           <p className="text-gray-500 mt-1">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus
-            dicta maxime molestias deserunt suscipit, ut earum ad placeat, enim
-            repellat ducimus, veritatis facilis temporibus ea ex dolorem
-            distinctio quasi iure!
+            {restaurant.restaurant?.description}
           </p>
           <div className="space-y-3 mt-3">
             <p className="text-gray-500 flex items-center gap-3">
@@ -109,8 +142,8 @@ const RestaurantDetails = () => {
                 >
                   {foodTypes.map((foodType) => (
                     <FormControlLabel
-                      value={foodType.value}
                       key={foodType.value}
+                      value={foodType.value}
                       control={<Radio />}
                       label={foodType.label}
                     />
@@ -125,16 +158,16 @@ const RestaurantDetails = () => {
               </Typography>
               <FormControl className="py-10 space-y-5" component={"fieldset"}>
                 <RadioGroup
-                  onChange={handleFilter}
-                  name="food_type"
-                  value={foodType}
+                  onChange={handleFilterCategory}
+                  name="foodCategory"
+                  value={selectedCategory}
                 >
-                  {categories.map((foodCategory) => (
+                  {restaurant.categories.map((foodCategory) => (
                     <FormControlLabel
-                      value={foodCategory}
-                      key={foodCategory}
+                      value={foodCategory.name}
+                      key={foodCategory.id}
                       control={<Radio />}
-                      label={foodCategory}
+                      label={foodCategory.name}
                     />
                   ))}
                 </RadioGroup>
@@ -143,8 +176,8 @@ const RestaurantDetails = () => {
           </div>
         </div>
         <div className="space-y-5 lg:w-[80%] lg:pl-10">
-          {menu.map((item) => (
-            <MenuCard key={item.id} {...item} />
+          {menu.menuItems.map((item, index) => (
+            <MenuCard key={index} food={item} />
           ))}
         </div>
       </section>

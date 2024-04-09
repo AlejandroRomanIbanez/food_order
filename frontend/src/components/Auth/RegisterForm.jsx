@@ -11,7 +11,7 @@ import {
 import { Formik, Form, Field } from "formik";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { registerUser } from "../State/Authentication/Action";
+import { registerUser } from "../../State/Authentication/Action";
 
 const initialValues = {
   fullName: "",
