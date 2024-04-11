@@ -19,6 +19,9 @@ export const createOrder = (reqData) => async (dispatch) => {
         Authorization: `Bearer ${reqData.jwt}`,
       },
     });
+    if (data.paymentUrl) {
+      window.location.href = data.paymentUrl;
+    }
     dispatch({ type: CREATE_ORDER_SUCCESS, payload: data });
     console.log("Created Order data", data);
   } catch (err) {
