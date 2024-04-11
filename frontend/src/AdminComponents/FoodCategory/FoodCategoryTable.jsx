@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Card,
@@ -12,17 +12,23 @@ import {
   TableRow,
   IconButton,
 } from "@mui/material";
-import { Create, Delete } from "@mui/icons-material";
+import { Create } from "@mui/icons-material";
+import CreateFoodCategoryForm from "./CreateFoodCategoryForm";
+import CreateFormModal from "../FormModal/CreateFormModal";
 
 const orders = [1, 1, 1, 1, 1, 1, 1];
 
 const FoodCategoryTable = () => {
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   return (
     <Box>
       <Card className="mt-1">
         <CardHeader
           action={
-            <IconButton aria-label="settings">
+            <IconButton onClick={handleOpen} aria-label="settings">
               <Create />
             </IconButton>
           }
@@ -53,6 +59,11 @@ const FoodCategoryTable = () => {
           </Table>
         </TableContainer>
       </Card>
+      <CreateFormModal
+        open={open}
+        handleClose={handleClose}
+        formComponent={CreateFoodCategoryForm}
+      />
     </Box>
   );
 };

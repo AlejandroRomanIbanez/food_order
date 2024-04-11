@@ -13,16 +13,26 @@ import {
   IconButton,
 } from "@mui/material";
 import { Create, Delete } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const orders = [1, 1, 1, 1, 1, 1, 1];
 
 const MenuTable = () => {
+  const navigate = useNavigate();
+
+  const handleNavigateCreateMenu = () => {
+    navigate("/admin/restaurant/add-menu");
+  };
+
   return (
     <Box>
       <Card className="mt-1">
         <CardHeader
           action={
-            <IconButton aria-label="settings">
+            <IconButton
+              onClick={handleNavigateCreateMenu}
+              aria-label="settings"
+            >
               <Create />
             </IconButton>
           }

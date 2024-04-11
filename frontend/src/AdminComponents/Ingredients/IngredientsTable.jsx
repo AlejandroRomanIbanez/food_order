@@ -12,21 +12,27 @@ import {
   TableRow,
   IconButton,
 } from "@mui/material";
-import { Create, Delete } from "@mui/icons-material";
+import { Create } from "@mui/icons-material";
+import CreateFormModal from "../FormModal/CreateFormModal";
+import CreateIngredientForm from "./CreateIngredientForm";
 
 const orders = [1, 1, 1, 1, 1, 1, 1];
 
 const IngredientsTable = () => {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <Box>
       <Card className="mt-1">
         <CardHeader
           action={
-            <IconButton aria-label="settings">
+            <IconButton onClick={handleOpen} aria-label="settings">
               <Create />
             </IconButton>
           }
-          title="Menu"
+          title="Ingredients"
           sx={{ pt: 2, alignItems: "center" }}
         />
         <TableContainer component={Paper}>
@@ -57,6 +63,11 @@ const IngredientsTable = () => {
           </Table>
         </TableContainer>
       </Card>
+      <CreateFormModal
+        open={open}
+        handleClose={handleClose}
+        formComponent={CreateIngredientForm}
+      />
     </Box>
   );
 };

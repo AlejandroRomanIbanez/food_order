@@ -1,6 +1,6 @@
-const upload_preset = "alex's-food";
-const cloud_name = "dle33zl4q";
-const api_url = `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`;
+const upload_preset = process.env.UPLOAD_PRESET;
+const cloud_name = process.env.CLOUD_NAME;
+const api_url = process.env.API_URL;
 
 export const uploadImageToCloudinary = async (file) => {
   const data = new FormData();
