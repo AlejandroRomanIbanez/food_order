@@ -47,6 +47,8 @@ const RestaurantDetails = () => {
   const { auth, restaurant, menu } = useSelector((store) => store);
   const { id, city } = useParams();
   const [selectedCategory, setSelectedCategory] = useState("");
+  console.log("restaurantDetails", restaurant);
+  console.log("selectedCategory", selectedCategory);
 
   const handleFilter = (event) => {
     setFoodType(event.target.value);
@@ -80,28 +82,28 @@ const RestaurantDetails = () => {
     <div className="px-5 lg:px-20">
       <section>
         <h3 className="text-gray-500 py-2 mt-10">
-          Home/spain/indian fast food/3
+          {restaurant?.usersRestaurants?.name}
         </h3>
         <div>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <img
                 className="w-full h-[40vh] object-cover"
-                src={restaurant?.restaurant?.images[0]}
+                src={restaurant?.usersRestaurants?.images[0]}
                 alt=""
               />
             </Grid>
             <Grid item xs={12} lg={6}>
               <img
                 className="w-full h-[40vh] object-cover"
-                src={restaurant?.restaurant?.images[1]}
+                src={restaurant?.usersRestaurants?.images[1]}
                 alt=""
               />
             </Grid>
             <Grid item xs={12} lg={6}>
               <img
                 className="w-full h-[40vh] object-cover"
-                src={restaurant?.restaurant?.images[2]}
+                src={restaurant?.usersRestaurants?.images[2]}
                 alt=""
               />
             </Grid>
@@ -109,10 +111,10 @@ const RestaurantDetails = () => {
         </div>
         <div className="pt-3 pb-5">
           <h1 className="text-4xl font-semibold">
-            {restaurant.restaurant?.name}
+            {restaurant.usersRestaurants?.name}
           </h1>
           <p className="text-gray-500 mt-1">
-            {restaurant.restaurant?.description}
+            {restaurant.usersRestaurants?.description}
           </p>
           <div className="space-y-3 mt-3">
             <p className="text-gray-500 flex items-center gap-3">
@@ -121,7 +123,7 @@ const RestaurantDetails = () => {
             </p>
             <p className="text-gray-500 flex items-center gap-3">
               <CalendarTodayIcon />
-              <span>Mon-Sun: 9:00 AM - 9:00 PM (Today)</span>
+              <span>{restaurant.usersRestaurants?.openingHours}</span>
             </p>
           </div>
         </div>

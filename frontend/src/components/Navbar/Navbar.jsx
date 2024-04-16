@@ -19,7 +19,7 @@ export const Navbar = () => {
   };
 
   const handleAvatarClick = () => {
-    if (auth.user?.role === "ROLE_RESTAURANT_OWNER") {
+    if (auth.user?.role === "ROLE_CUSTOMER") {
       navigate("/profile");
     } else {
       navigate("/admin/restaurant");
