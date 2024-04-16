@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AdminSidebar from "./AdminSidebar";
 import { Routes, Route } from "react-router-dom";
 import Dashboard from "./../Dashborad/Dashboard";
@@ -9,9 +9,33 @@ import Ingredients from "./../Ingredients/Ingredients";
 import Events from "./../Events/Events";
 import RestaurantDetails from "./RestaurantDetails";
 import CreateMenuForm from "../Menu/CreateMenuForm";
+import { useDispatch, useSelector } from "react-redux";
+import { getRestaurantsCategory } from "../../State/Restaurant/Action";
+import { fetchRestaurantsOrder } from "./../../State/RestaurantOrder/Action";
 
 const Admin = () => {
+  const dispatch = useDispatch();
+  const jwt = localStorage.getItem("jwt");
+  const { restaurant } = useSelector((store) => store);
+  console.log("restaurant in", restaurant);
+
   const handleOnClose = () => {};
+
+  useEffect(() => {
+    dispatch(
+      getRestaurantsCategory({
+        jwt,
+        restaurantId: restaurant.usersRestaurants?.id,
+      })
+    );
+    dispatch(
+      fetchRestaurantsOrder({
+        jwt,
+        restaurantId: restaurant.usersRestaurants?.id,
+        orderStatus: restaurant.usersRestaurants?.orderStatus,
+      })
+    );
+  }, []);
 
   return (
     <div>

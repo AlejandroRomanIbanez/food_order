@@ -76,7 +76,7 @@ export const getRestaurantById = (reqData) => async (dispatch) => {
 export const getRestaurantByUserId = (jwt) => async (dispatch) => {
   dispatch({ type: GET_RESTAURANT_BY_USER_ID_REQUEST });
   try {
-    const { data } = await api.get(`api/restaurants/user`, {
+    const { data } = await api.get(`api/admin/restaurants/user`, {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
@@ -95,7 +95,7 @@ export const getRestaurantByUserId = (jwt) => async (dispatch) => {
 export const createRestaurant = (reqData) => async (dispatch) => {
   dispatch({ type: CREATE_RESTAURANT_REQUEST });
   try {
-    const { data } = await api.post(`api/admin/restaurants/`, reqData.data, {
+    const { data } = await api.post(`api/admin/restaurants`, reqData.data, {
       headers: {
         Authorization: `Bearer ${reqData.token}`,
       },
@@ -160,7 +160,7 @@ export const updateRestaurantStatus =
     dispatch({ type: UPDATE_RESTAURANT_STATUS_REQUEST });
     try {
       const { data } = await api.put(
-        `api/admin/restaurant/${restaurantId}/status`,
+        `api/admin/restaurants/${restaurantId}/status`,
         {},
         {
           headers: {
@@ -275,7 +275,7 @@ export const createCategory =
   };
 
 export const getRestaurantsCategory =
-  ({ restaurantId, jwt }) =>
+  ({ jwt, restaurantId }) =>
   async (dispatch) => {
     dispatch({ type: GET_RESTAURANTS_CATEGORY_REQUEST });
     try {

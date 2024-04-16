@@ -8,8 +8,9 @@ import {
   Button,
 } from "@mui/material";
 import { AddPhotoAlternate, Close } from "@mui/icons-material";
-import { darkTheme } from "./../../Theme/DarkTheme";
 import { uploadImageToCloudinary } from "../util/uploadToCloudaniry";
+import { useDispatch } from "react-redux";
+import { createRestaurant } from "../../State/Restaurant/Action";
 
 const initialValues = {
   name: "",
@@ -30,6 +31,8 @@ const initialValues = {
 
 const CreateRestaurantForm = () => {
   const [uploadImage, setUploadImage] = useState(false);
+  const dispatch = useDispatch();
+  const jwt = localStorage.getItem("jwt");
   const formik = useFormik({
     initialValues,
     onSubmit: (values) => {
@@ -44,14 +47,17 @@ const CreateRestaurantForm = () => {
           postalCode: values.postalCode,
           country: values.country,
         },
-        email: values.email,
-        mobile: values.mobile,
-        twitter: values.twitter,
-        instagram: values.instagram,
-        openinigHours: values.openinigHours,
+        contactInformation: {
+          email: values.email,
+          mobile: values.mobile,
+          twitter: values.twitter,
+          instagram: values.instagram,
+        },
+        openingHours: values.openinigHours,
         images: values.images,
       };
       console.log("data form:", data);
+      dispatch(createRestaurant({ data, token: jwt }));
     },
   });
 

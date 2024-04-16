@@ -14,16 +14,23 @@ import { useEffect } from "react";
 import { getUser } from "./State/Authentication/Action";
 import { findCart } from "./State/Cart/Action";
 import Routers from "./Routers/Routers";
+import { getRestaurantByUserId } from "./State/Restaurant/Action";
 
 function App() {
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
   const { auth } = useSelector((store) => store);
+  console.log("auth.jwt", auth.jwt);
 
   useEffect(() => {
     dispatch(getUser(auth.jwt || jwt));
     dispatch(findCart(jwt));
   }, [auth.jwt]);
+
+  useEffect(() => {
+    dispatch(getRestaurantByUserId(auth.jwt || jwt));
+  }, [auth.user]);
+
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />

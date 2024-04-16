@@ -22,7 +22,7 @@ export const Navbar = () => {
     if (auth.user?.role === "ROLE_RESTAURANT_OWNER") {
       navigate("/profile");
     } else {
-      navigate("/admin/restaurants");
+      navigate("/admin/restaurant");
     }
   };
 
@@ -49,7 +49,7 @@ export const Navbar = () => {
               className="cursor-pointer"
               sx={{ bgcolor: "white", color: pink.A400 }}
             >
-              {auth.user?.fullName[0].toUpperCase()}
+              {auth.user?.fullName[0]?.toUpperCase()}
             </Avatar>
           ) : (
             <IconButton onClick={handleLogin}>

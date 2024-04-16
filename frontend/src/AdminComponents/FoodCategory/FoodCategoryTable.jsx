@@ -15,10 +15,14 @@ import {
 import { Create } from "@mui/icons-material";
 import CreateFoodCategoryForm from "./CreateFoodCategoryForm";
 import CreateFormModal from "../FormModal/CreateFormModal";
+import { useDispatch, useSelector } from "react-redux";
 
 const orders = [1, 1, 1, 1, 1, 1, 1];
 
 const FoodCategoryTable = () => {
+  const { restaurant } = useSelector((store) => store);
+  const dispatch = useDispatch();
+  const jwt = localStorage.getItem("jwt");
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);

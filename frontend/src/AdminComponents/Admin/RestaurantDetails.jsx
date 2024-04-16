@@ -1,26 +1,38 @@
 import React from "react";
 import { Button, Grid, Card, CardHeader, CardContent } from "@mui/material";
-import { Facebook, Instagram, LinkedIn, Twitter } from "@mui/icons-material";
+import { GitHub, Instagram, LinkedIn, Twitter } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import { updateRestaurantStatus } from "../../State/Restaurant/Action";
 
 const RestaurantDetails = () => {
+  const { restaurant } = useSelector((store) => store);
+  const userRestaurant = restaurant.usersRestaurants;
+  const jwt = localStorage.getItem("jwt");
+  const dispatch = useDispatch();
+
   const handleRestaturantStatus = () => {
-    console.log("clicked");
+    dispatch(
+      updateRestaurantStatus({
+        restaurantId: userRestaurant?.id,
+        jwt: jwt,
+      })
+    );
   };
 
   return (
     <div className="lg:px-20 px-5 pb-10">
       <div className="py-5 flex justify-center items-center gap-5">
         <h1 className="text-2xl lg:text-7xl text-center font-bold p-5">
-          Spanish Fast Food
+          {userRestaurant?.name}
         </h1>
         <Button
           onClick={handleRestaturantStatus}
           variant="contained"
           className="py-[1rem] px[2rem]"
-          color={true ? "primary" : "error"}
+          color={!userRestaurant?.open ? "primary" : "error"}
           size="large"
         >
-          {true ? "Close" : "Open"}
+          {userRestaurant?.open ? "Close" : "Open"}
         </Button>
       </div>
       <Grid container spacing={2}>
@@ -35,35 +47,35 @@ const RestaurantDetails = () => {
                   <p className="w-48">Owner</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    Alex
+                    {userRestaurant?.owner.fullName}
                   </p>
                 </div>
                 <div className="flex">
                   <p className="w-48">Restaurant Name</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    Alex's Restaurant
+                    {userRestaurant?.name}
                   </p>
                 </div>
                 <div className="flex">
                   <p className="w-48">Cuisine Type</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    Alex
+                    {userRestaurant?.cuisineType}
                   </p>
                 </div>
                 <div className="flex">
                   <p className="w-48">Opening Hours</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    Alex
+                    {userRestaurant?.openingHours}
                   </p>
                 </div>
                 <div className="flex">
                   <p className="w-48">Status</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    {true ? (
+                    {userRestaurant?.open ? (
                       <span className="px-5 py-2 rounded-full bg-green-400 text-gray-950">
                         Open
                       </span>
@@ -89,28 +101,28 @@ const RestaurantDetails = () => {
                   <p className="w-48">Country</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    Alex
+                    {userRestaurant?.address?.country}
                   </p>
                 </div>
                 <div className="flex">
                   <p className="w-48">City</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    Alex's Restaurant
+                    {userRestaurant?.address?.city}
                   </p>
                 </div>
                 <div className="flex">
                   <p className="w-48">Postal Code</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    Alex
+                    {userRestaurant?.address?.postalCode}
                   </p>
                 </div>
                 <div className="flex">
                   <p className="w-48">Street Address</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    Alex
+                    {userRestaurant?.address?.streetAddress}
                   </p>
                 </div>
               </div>
@@ -128,31 +140,47 @@ const RestaurantDetails = () => {
                   <p className="w-48">Email</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    Alex
+                    {userRestaurant?.contactInformation?.email}
                   </p>
                 </div>
                 <div className="flex">
                   <p className="w-48">Mobile</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    Alex's Restaurant
+                    {userRestaurant?.contactInformation?.mobile}
                   </p>
                 </div>
                 <div className="flex">
                   <p className="w-48">Social</p>
-                  <div>
+                  <div className="cursor-pointer">
                     <span className="pr-5">-</span>
-                    <a href="/">
+                    <a
+                      href={userRestaurant?.contactInformation?.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <Instagram sx={{ fontSize: "2rem" }} />
                     </a>
-                    <a href="/">
+                    <a
+                      href={userRestaurant?.contactInformation?.twitter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <Twitter sx={{ fontSize: "2rem" }} />
                     </a>
-                    <a href="/">
+                    <a
+                      href={"https://www.linkedin.com/in/roman-ibanez/"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <LinkedIn sx={{ fontSize: "2rem" }} />
                     </a>
-                    <a href="/">
-                      <Facebook sx={{ fontSize: "2rem" }} />
+                    <a
+                      href={"https://github.com/AlejandroRomanIbanez"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <GitHub sx={{ fontSize: "2rem" }} />
                     </a>
                   </div>
                 </div>
