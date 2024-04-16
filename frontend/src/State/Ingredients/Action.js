@@ -72,6 +72,26 @@ export const createIngredientCategory =
     }
   };
 
+export const getIngredientCategory =
+  ({ restaurantId, jwt }) =>
+  async (dispatch) => {
+    try {
+      const { data } = await api.get(
+        `api/admin/ingredients/restaurant/${restaurantId}/category`,
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+      dispatch({ type: GET_INGREDIENT_CATEGORY_SUCCESS, payload: data });
+      console.log("Ingredient Category data", data);
+    } catch (err) {
+      dispatch({ type: GET_INGREDIENT_CATEGORY_FAILURE, payload: err });
+      console.log("error", err);
+    }
+  };
+
 export const updateStockOfIngredient =
   ({ ingredientId, jwt }) =>
   async (dispatch) => {
