@@ -17,7 +17,6 @@ const Admin = () => {
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
   const { restaurant } = useSelector((store) => store);
-  console.log("restaurant in", restaurant);
 
   const handleOnClose = () => {};
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Card,
@@ -16,6 +16,7 @@ import { Create } from "@mui/icons-material";
 import CreateFoodCategoryForm from "./CreateFoodCategoryForm";
 import CreateFormModal from "../FormModal/CreateFormModal";
 import { useDispatch, useSelector } from "react-redux";
+import { getRestaurantsCategory } from "../../State/Restaurant/Action";
 
 const orders = [1, 1, 1, 1, 1, 1, 1];
 
@@ -27,6 +28,16 @@ const FoodCategoryTable = () => {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    dispatch(
+      getRestaurantsCategory({
+        jwt,
+        restaurantId: restaurant.usersRestaurants?.id,
+      })
+    );
+  }, []);
+
   return (
     <Box>
       <Card className="mt-1">
@@ -48,15 +59,15 @@ const FoodCategoryTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {orders.map((row) => (
+              {restaurant.categories.map((category) => (
                 <TableRow
-                  key={row.name}
+                  key={category.name}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    {1}
+                    {category.id}
                   </TableCell>
-                  <TableCell align="left">{"name"}</TableCell>
+                  <TableCell align="left">{category.name}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

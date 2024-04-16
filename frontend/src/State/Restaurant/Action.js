@@ -261,7 +261,7 @@ export const createCategory =
   async (dispatch) => {
     dispatch({ type: CREATE_CATEGORY_REQUEST });
     try {
-      const { data } = await api.post(`api/admin/category/`, reqData, {
+      const { data } = await api.post(`api/admin/category`, reqData, {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },

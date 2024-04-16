@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createCategory } from "../../State/Restaurant/Action";
 
-const CreateFoodCategoryForm = () => {
+const CreateFoodCategoryForm = ({ handleClose }) => {
   const { restaurant } = useSelector((store) => store);
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
@@ -19,6 +19,7 @@ const CreateFoodCategoryForm = () => {
       restaurantId: { id: 1 },
     };
     dispatch(createCategory({ reqData: data, jwt: jwt }));
+    handleClose();
     console.log(data);
   };
 
