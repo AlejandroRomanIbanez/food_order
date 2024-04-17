@@ -35,7 +35,7 @@ export const updateOrderStatus =
     dispatch({ type: UPDATE_ORDER_STATUS_REQUEST });
     try {
       const { data } = await api.put(
-        `api/admin/orders/${orderId}/${orderStatus}`,
+        `api/admin/order/${orderId}/${orderStatus}`,
         {},
         {
           headers: {

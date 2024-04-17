@@ -3,6 +3,8 @@ import { TextField, Button, Grid } from "@mui/material";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import { useDispatch, useSelector } from "react-redux";
+import { createEventAction } from "../../State/Restaurant/Action";
 
 const initialValues = {
   image: "",
@@ -14,6 +16,9 @@ const initialValues = {
 
 const CreateEventForm = ({ handleClose }) => {
   const [formData, setFormData] = useState(initialValues);
+  const dispatch = useDispatch();
+  const jwt = localStorage.getItem("jwt");
+  const { restaurant, restaurantOrder } = useSelector((store) => store);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -29,6 +34,13 @@ const CreateEventForm = ({ handleClose }) => {
 
     console.log("formattedData: ", formattedData);
 
+    dispatch(
+      createEventAction({
+        data: formattedData,
+        jwt,
+        restaurantId: restaurant.usersRestaurants?.id,
+      })
+    );
     setFormData(initialValues);
     handleClose();
   };

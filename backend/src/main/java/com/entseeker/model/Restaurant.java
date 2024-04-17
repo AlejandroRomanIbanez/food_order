@@ -29,8 +29,8 @@ public class Restaurant {
 
     private String cuisineType;
 
-    @OneToOne
-    private Address address;
+    @Embedded
+    private RestaurantAddress address;
 
     @Embedded
     private ContactInformation contactInformation;

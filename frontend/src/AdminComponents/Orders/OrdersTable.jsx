@@ -3,9 +3,12 @@ import {
   Avatar,
   AvatarGroup,
   Box,
+  Button,
   Card,
   CardHeader,
   Chip,
+  Menu,
+  MenuItem,
   Paper,
   Table,
   TableBody,
@@ -15,14 +18,42 @@ import {
   TableRow,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchRestaurantsOrder } from "../../State/RestaurantOrder/Action";
+import {
+  fetchRestaurantsOrder,
+  updateOrderStatus,
+} from "../../State/RestaurantOrder/Action";
+
+const orderStatus = [
+  {
+    label: "Pending",
+    value: "PENDING",
+  },
+  {
+    label: "Completed",
+    value: "COMPLETED",
+  },
+  {
+    label: "Out For Delivery",
+    value: "OUT_FOR_DELIVERY",
+  },
+  {
+    label: "Delivered",
+    value: "DELIVERED",
+  },
+];
 
 const OrdersTable = () => {
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
-  const { restaurant, ingredients, menu, restaurantOrder } = useSelector(
-    (store) => store
-  );
+  const { restaurant, restaurantOrder } = useSelector((store) => store);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   useEffect(() => {
     dispatch(
@@ -33,6 +64,11 @@ const OrdersTable = () => {
       })
     );
   }, []);
+
+  const handleUpdateOrderStatus = (orderId, orderStatus) => {
+    dispatch(updateOrderStatus({ orderId, orderStatus, jwt }));
+    handleClose();
+  };
 
   return (
     <Box>
@@ -49,6 +85,7 @@ const OrdersTable = () => {
                 <TableCell align="right">Name</TableCell>
                 <TableCell align="right">Ingredients</TableCell>
                 <TableCell align="right">Status</TableCell>
+                <TableCell align="right">Update</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -84,6 +121,36 @@ const OrdersTable = () => {
                     ))}
                   </TableCell>
                   <TableCell align="right">{order.orderStatus}</TableCell>
+                  <TableCell align="right">
+                    <Button
+                      id="basic-button"
+                      aria-controls={open ? "basic-menu" : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={open ? "true" : undefined}
+                      onClick={handleClick}
+                    >
+                      Update
+                    </Button>
+                    <Menu
+                      id="basic-menu"
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      MenuListProps={{
+                        "aria-labelledby": "basic-button",
+                      }}
+                    >
+                      {orderStatus.map((status) => (
+                        <MenuItem
+                          onClick={() =>
+                            handleUpdateOrderStatus(order.id, status.value)
+                          }
+                        >
+                          {status.label}
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

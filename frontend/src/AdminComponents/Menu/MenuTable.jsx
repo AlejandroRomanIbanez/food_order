@@ -26,7 +26,7 @@ const MenuTable = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
-  const { restaurant, ingredients, menu } = useSelector((store) => store);
+  const { restaurant, menu } = useSelector((store) => store);
   console.log("menu", menu);
 
   const handleNavigateCreateMenu = () => {
@@ -88,7 +88,7 @@ const MenuTable = () => {
                   <TableCell align="right">{item.name}</TableCell>
                   <TableCell align="right">
                     {item.ingredients?.map((ingredient) => (
-                      <Chip label={ingredient.name} />
+                      <Chip key={ingredient.id} label={ingredient.name} />
                     ))}
                   </TableCell>
                   <TableCell align="right">{item.price}€</TableCell>

@@ -179,7 +179,7 @@ export const updateRestaurantStatus =
     }
   };
 
-export const createEvent =
+export const createEventAction =
   ({ data, jwt, restaurantId }) =>
   async (dispatch) => {
     dispatch({ type: CREATE_EVENTS_REQUEST });
