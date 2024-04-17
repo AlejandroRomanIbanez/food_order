@@ -14,9 +14,9 @@ const Events = () => {
   }, []);
 
   return (
-    <div className="mt-5 px-5 flex flex-wrap gap-5">
+    <div className="mt-5 px-5 flex justify-center flex-wrap gap-5">
       {restaurant.events.map((event) => (
-        <EventCard key={event.id} event={event} />
+        <EventCard key={event.id} event={event} isAdmin={false} />
       ))}
     </div>
   );
