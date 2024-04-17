@@ -1,5 +1,6 @@
 package com.entseeker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +19,7 @@ public class Event {
     private Long id;
 
     @ManyToOne()
+    @JsonIgnore
     private Restaurant restaurant;
 
     private String name;

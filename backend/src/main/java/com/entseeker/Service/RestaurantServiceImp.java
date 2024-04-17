@@ -86,7 +86,7 @@ public class RestaurantServiceImp implements RestaurantService{
     public Restaurant findRestaurantById(Long restaurantId) throws Exception {
         Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(restaurantId);
         if(optionalRestaurant.isEmpty()){
-            throw new Exception("Restaurant not found for user id: " + restaurantId);
+            throw new Exception("Restaurant not found for id: " + restaurantId);
         }
         return optionalRestaurant.get();
     }
