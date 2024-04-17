@@ -8,8 +8,9 @@ import {
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { style } from "./../Cart/NewAddressCard";
 
-const EventCard = ({ event, isAdmin }) => {
+const EventCard = ({ event, isAdmin, handleDeleteEvent }) => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -24,7 +25,7 @@ const EventCard = ({ event, isAdmin }) => {
 
   return (
     <div>
-      <Card sx={{ width: 345 }}>
+      <Card sx={{ width: 345, position: "relative" }}>
         <CardMedia sx={{ height: 345 }} image={event.image} />
         <CardContent>
           <Typography variant="h5">{event.restaurant.name}</Typography>
@@ -37,15 +38,15 @@ const EventCard = ({ event, isAdmin }) => {
             <p>
               <p className="text-sm text-red-500">{formatDate(event.endsAt)}</p>
             </p>
+            {isAdmin && (
+              <CardActions sx={{ position: "absolute", bottom: 0, right: 0 }}>
+                <IconButton onClick={handleDeleteEvent}>
+                  <DeleteIcon />
+                </IconButton>
+              </CardActions>
+            )}
           </div>
         </CardContent>
-        {false && (
-          <CardActions>
-            <IconButton>
-              <DeleteIcon />
-            </IconButton>
-          </CardActions>
-        )}
       </Card>
     </div>
   );

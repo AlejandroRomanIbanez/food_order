@@ -3,7 +3,10 @@ import React, { useEffect } from "react";
 import CreateFormModal from "../FormModal/CreateFormModal";
 import CreateEventForm from "./CreateEventForm";
 import { useDispatch, useSelector } from "react-redux";
-import { getRestaurantsEvents } from "../../State/Restaurant/Action";
+import {
+  deleteEvent,
+  getRestaurantsEvents,
+} from "../../State/Restaurant/Action";
 import EventCard from "../../components/Profile/EventCard";
 
 const Events = () => {
@@ -24,11 +27,20 @@ const Events = () => {
     );
   }, []);
 
+  const handleDeleteEvent = (eventId) => {
+    dispatch(deleteEvent({ eventId, jwt }));
+  };
+
   return (
     <>
       <div className="mt-5 px-5 flex justify-center flex-wrap gap-5">
         {restaurant.restaurantsEvents.map((event) => (
-          <EventCard key={event.id} event={event} isAdmin={true} />
+          <EventCard
+            key={event.id}
+            event={event}
+            isAdmin={true}
+            handleDeleteEvent={() => handleDeleteEvent(event.id)}
+          />
         ))}
       </div>
       <div className="p-5 flex justify-center">
