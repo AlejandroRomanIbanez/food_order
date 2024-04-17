@@ -19,7 +19,6 @@ public class Event {
     private Long id;
 
     @ManyToOne()
-    @JsonIgnore
     private Restaurant restaurant;
 
     private String name;

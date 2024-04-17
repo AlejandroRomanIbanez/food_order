@@ -9,26 +9,33 @@ import {
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const EventCard = () => {
+const EventCard = ({ event }) => {
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
   return (
     <div>
       <Card sx={{ width: 345 }}>
-        <CardMedia
-          sx={{ height: 345 }}
-          image="https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-        />
+        <CardMedia sx={{ height: 345 }} image={event.image} />
         <CardContent>
-          <Typography variant="h5">American Fast Food</Typography>
-          <Typography variant="body2">35% on your first order</Typography>
+          <Typography variant="h5">{event.restaurant.name}</Typography>
+          <Typography variant="body2">{event.name}</Typography>
           <div className="py-2 space-y-2">
-            <p>Spain</p>
-            <p className="text-sm text-blue-500">{new Date().toDateString()}</p>
+            <p>{event.location}</p>
+            <p className="text-sm text-blue-500">
+              {formatDate(event.startedAt)}
+            </p>
             <p>
-              <p className="text-sm text-red-500">
-                {new Date(
-                  new Date().setDate(new Date().getDate() + 7)
-                ).toDateString()}
-              </p>
+              <p className="text-sm text-red-500">{formatDate(event.endsAt)}</p>
             </p>
           </div>
         </CardContent>

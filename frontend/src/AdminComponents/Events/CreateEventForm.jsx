@@ -25,11 +25,9 @@ const CreateEventForm = ({ handleClose }) => {
     const formattedData = {
       ...formData,
       startedAt: formData.startedAt
-        ? dayjs(formData.startedAt).format("MMMM DD YYYY, hh:mm A")
+        ? dayjs(formData.startedAt).toISOString()
         : null,
-      endsAt: formData.endsAt
-        ? dayjs(formData.endsAt).format("MMMM DD YYYY, hh:mm A")
-        : null,
+      endsAt: formData.endsAt ? dayjs(formData.endsAt).toISOString() : null,
     };
 
     console.log("formattedData: ", formattedData);
