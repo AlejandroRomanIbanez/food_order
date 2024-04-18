@@ -2,12 +2,8 @@ import { CREATE_CATEGORY_SUCCESS } from "../Restaurant/ActionType";
 import {
   CREATE_INGREDIENT,
   CREATE_INGREDIENT_CATEGORY_SUCCESS,
-  CREATE_INGREDIENT_FAILURE,
-  CREATE_INGREDIENT_REQUEST,
   CREATE_INGREDIENT_SUCCESS,
   GET_INGREDIENTS,
-  GET_INGREDIENTS_FAILURE,
-  GET_INGREDIENTS_REQUEST,
   GET_INGREDIENT_CATEGORY_SUCCESS,
   UPDATE_STOCK,
 } from "./ActionType";
@@ -38,12 +34,12 @@ const IngredientsReducer = (state = initialState, action) => {
     case CREATE_INGREDIENT_CATEGORY_SUCCESS:
       return {
         ...state,
-        ingredients: [...state.ingredients, action.payload],
+        category: [...state.category, action.payload],
       };
     case CREATE_INGREDIENT_SUCCESS:
       return {
         ...state,
-        category: [...state.category, action.payload],
+        ingredients: [...state.ingredients, action.payload],
       };
 
     case UPDATE_STOCK:

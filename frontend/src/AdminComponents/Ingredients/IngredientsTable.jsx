@@ -29,6 +29,7 @@ const IngredientsTable = () => {
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
   const { restaurant, ingredients } = useSelector((store) => store);
+  console.log("ingredients", ingredients);
 
   useEffect(() => {
     dispatch(
@@ -80,9 +81,11 @@ const IngredientsTable = () => {
                     {ingredient.id}
                   </TableCell>
                   <TableCell align="right">{ingredient.name}</TableCell>
-                  <TableCell align="right">
-                    {ingredient.category.name}
-                  </TableCell>
+
+                  {ingredients.category.map((cat) => (
+                    <TableCell align="right">{cat.name}</TableCell>
+                  ))}
+
                   <TableCell align="right">
                     <Button
                       color={ingredient.inStock ? "success" : "error"}

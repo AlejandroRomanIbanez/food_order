@@ -11,6 +11,7 @@ const CreateIngredientCategoryForm = ({ handleClose }) => {
   const [formData, setFormData] = useState({
     name: "",
   });
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = {

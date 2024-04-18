@@ -51,17 +51,17 @@ public class EventServiceImp implements EventService {
     public Event updateEvent(CreateEventRequest req, Long eventId) throws Exception {
         Event event = findEventById(eventId);
         String name = req.getName();
-        if (name != null) {
+        if (name != null && !name.isEmpty()) {
             event.setName(name);
         }
 
         String image = req.getImage();
-        if (image != null) {
+        if (image != null && !image.isEmpty()) {
             event.setImage(image);
         }
 
         String location = req.getLocation();
-        if (location != null) {
+        if (location != null && !location.isEmpty()) {
             event.setLocation(location);
         }
 

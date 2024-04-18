@@ -35,7 +35,6 @@ export const getIngredientsOfRestaurants =
 export const createIngredient =
   ({ ingredient, jwt }) =>
   async (dispatch) => {
-    dispatch({ type: CREATE_INGREDIENT_REQUEST });
     try {
       const { data } = await api.post(`api/admin/ingredients`, ingredient, {
         headers: {
