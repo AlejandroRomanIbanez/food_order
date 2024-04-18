@@ -14,5 +14,7 @@ public interface EventService {
 
     public void deleteEvent(Long eventId) throws Exception;
 
+    public Event updateEvent( CreateEventRequest req, Long eventId) throws Exception;
+
     public List<Event> getRestaurantsEvents(Long restaurantId) throws Exception;
 }

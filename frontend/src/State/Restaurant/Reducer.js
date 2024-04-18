@@ -20,6 +20,7 @@ const restaurantReducer = (state = initialState, action) => {
     case actionTypes.GET_RESTAURANT_BY_ID_REQUEST:
     case actionTypes.CREATE_CATEGORY_REQUEST:
     case actionTypes.GET_RESTAURANTS_CATEGORY_REQUEST:
+    case actionTypes.UPDATE_RESTAURANT_EVENT_REQUEST:
       return {
         ...state,
         loading: true,
@@ -76,6 +77,18 @@ const restaurantReducer = (state = initialState, action) => {
         restaurantsEvents: [...state.restaurantsEvents, action.payload],
       };
 
+    case actionTypes.UPDATE_RESTAURANT_EVENT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        events: state.events.map((event) =>
+          event.id === action.payload.id ? action.payload : event
+        ),
+        restaurantsEvents: state.restaurantsEvents.map((event) =>
+          event.id === action.payload.id ? action.payload : event
+        ),
+      };
+
     case actionTypes.GET_ALL_EVENTS_SUCCESS:
       return {
         ...state,
@@ -127,6 +140,7 @@ const restaurantReducer = (state = initialState, action) => {
     case actionTypes.GET_RESTAURANTS_EVENTS_FAILURE:
     case actionTypes.CREATE_CATEGORY_FAILURE:
     case actionTypes.GET_RESTAURANTS_CATEGORY_FAILURE:
+    case actionTypes.UPDATE_RESTAURANT_EVENT_FAILURE:
       return {
         ...state,
         loading: false,

@@ -46,6 +46,17 @@ public class AdminEventController {
         return new ResponseEntity<>(event, HttpStatus.CREATED);
     }
 
+    @PutMapping("/{eventId}")
+    public ResponseEntity<Event> editEvent(
+            @RequestBody CreateEventRequest req,
+            @PathVariable Long eventId,
+            @RequestHeader("Authorization") String jwt) throws Exception {
+        User user = userService.findUserByJwtToken(jwt);
+
+        Event event = eventService.updateEvent(req, eventId);
+        return new ResponseEntity<>(event, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{eventId}")
     public ResponseEntity<MessageResponse> deleteEvent(@RequestHeader("Authorization") String jwt,
                                                        @PathVariable Long eventId ) throws Exception {

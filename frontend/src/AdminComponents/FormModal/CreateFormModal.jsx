@@ -20,6 +20,9 @@ const CreateFormModal = ({
   open,
   handleClose,
   formComponent: FormComponent,
+  isEdit,
+  cartEvent,
+  setIsEdit,
 }) => {
   return (
     <>
@@ -30,7 +33,12 @@ const CreateFormModal = ({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <FormComponent handleClose={handleClose} />
+          <FormComponent
+            handleClose={handleClose}
+            isEdit={isEdit}
+            cartEvent={cartEvent}
+            setIsEdit={setIsEdit}
+          />
         </Box>
       </Modal>
     </>

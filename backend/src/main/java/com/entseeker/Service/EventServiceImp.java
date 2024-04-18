@@ -7,6 +7,7 @@ import com.entseeker.request.CreateEventRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +45,36 @@ public class EventServiceImp implements EventService {
         Event event = findEventById(eventId);
 
         eventRepository.delete(event);
+    }
+
+    @Override
+    public Event updateEvent(CreateEventRequest req, Long eventId) throws Exception {
+        Event event = findEventById(eventId);
+        String name = req.getName();
+        if (name != null) {
+            event.setName(name);
+        }
+
+        String image = req.getImage();
+        if (image != null) {
+            event.setImage(image);
+        }
+
+        String location = req.getLocation();
+        if (location != null) {
+            event.setLocation(location);
+        }
+
+        Date startedAt = req.getStartedAt();
+        if (startedAt != null) {
+            event.setStartedAt(startedAt);
+        }
+
+        Date endsAt = req.getEndsAt();
+        if (endsAt != null) {
+            event.setEndsAt(endsAt);
+        }
+        return eventRepository.save(event);
     }
 
     public Event findEventById(Long eventId) throws Exception {

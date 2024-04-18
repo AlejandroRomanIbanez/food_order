@@ -39,6 +39,9 @@ import {
   GET_RESTAURANTS_CATEGORY_FAILURE,
   GET_RESTAURANTS_CATEGORY_REQUEST,
   GET_RESTAURANTS_CATEGORY_SUCCESS,
+  UPDATE_RESTAURANT_EVENT_REQUEST,
+  UPDATE_RESTAURANT_EVENT_SUCCESS,
+  UPDATE_RESTAURANT_EVENT_FAILURE,
 } from "./ActionType";
 
 export const getAllRestaurants = (jwt) => async (dispatch) => {
@@ -231,6 +234,28 @@ export const deleteEvent =
       console.log("Deleted Event data", data);
     } catch (err) {
       dispatch({ type: DELETE_EVENT_FAILURE, payload: err });
+      console.log("error", err);
+    }
+  };
+
+export const updateEvent =
+  ({ data, jwt, eventId }) =>
+  async (dispatch) => {
+    dispatch({ type: UPDATE_RESTAURANT_EVENT_REQUEST });
+    try {
+      const { data: response } = await api.put(
+        `api/admin/events/${eventId}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+      dispatch({ type: UPDATE_RESTAURANT_EVENT_SUCCESS, payload: response });
+      console.log("Updated Event data", response);
+    } catch (err) {
+      dispatch({ type: UPDATE_RESTAURANT_EVENT_FAILURE, payload: err });
       console.log("error", err);
     }
   };

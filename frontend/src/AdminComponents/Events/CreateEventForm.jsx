@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Button, Grid } from "@mui/material";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
-import { createEventAction } from "../../State/Restaurant/Action";
+import { createEventAction, updateEvent } from "../../State/Restaurant/Action";
 
 const initialValues = {
   image: "",
@@ -14,11 +14,26 @@ const initialValues = {
   endsAt: null,
 };
 
-const CreateEventForm = ({ handleClose }) => {
+const CreateEventForm = ({ handleClose, isEdit, cartEvent, setIsEdit }) => {
   const [formData, setFormData] = useState(initialValues);
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
-  const { restaurant, restaurantOrder } = useSelector((store) => store);
+  const { restaurant } = useSelector((store) => store);
+
+  console.log("cartEvent: ", cartEvent);
+
+  useEffect(() => {
+    console.log("cartEvent changed:", cartEvent);
+    if (isEdit && cartEvent) {
+      setFormData({
+        image: cartEvent.image,
+        location: cartEvent.location,
+        name: cartEvent.name,
+        startedAt: dayjs(cartEvent.startedAt),
+        endsAt: dayjs(cartEvent.endsAt),
+      });
+    }
+  }, [isEdit, cartEvent]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -32,13 +47,23 @@ const CreateEventForm = ({ handleClose }) => {
 
     console.log("formattedData: ", formattedData);
 
-    dispatch(
-      createEventAction({
-        data: formattedData,
-        jwt,
-        restaurantId: restaurant.usersRestaurants?.id,
-      })
-    );
+    if (isEdit && cartEvent) {
+      dispatch(
+        updateEvent({
+          eventId: cartEvent.id,
+          jwt,
+          data: formattedData,
+        })
+      );
+    } else {
+      dispatch(
+        createEventAction({
+          data: formattedData,
+          jwt,
+          restaurantId: restaurant.usersRestaurants?.id,
+        })
+      );
+    }
     setFormData(initialValues);
     handleClose();
   };
@@ -56,7 +81,7 @@ const CreateEventForm = ({ handleClose }) => {
     <div className="">
       <div className="p-5">
         <h1 className="text-gray-400 text-center text-xl pb-10">
-          Create Category
+          {isEdit ? "Edit Event" : "Create Event"}
         </h1>
         <form className="space-y-5" onSubmit={handleSubmit}>
           <Grid container spacing={2}>
@@ -90,7 +115,7 @@ const CreateEventForm = ({ handleClose }) => {
                 label="Event Name"
                 variant="outlined"
                 onChange={handleFormChange}
-                value={formData.handleChange}
+                value={formData.name}
               ></TextField>
             </Grid>
             <Grid item xs={12}>
@@ -126,7 +151,7 @@ const CreateEventForm = ({ handleClose }) => {
           </Grid>
           <div className="flex justify-center">
             <Button variant="contained" type="submit">
-              Create Event
+              {isEdit ? "Edit Event" : "Create Event"}
             </Button>
           </div>
         </form>
