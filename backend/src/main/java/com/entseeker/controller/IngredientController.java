@@ -7,6 +7,7 @@ import com.entseeker.model.IngredientsItem;
 import com.entseeker.model.User;
 import com.entseeker.request.IngredientCategoryRequest;
 import com.entseeker.request.IngredientRequest;
+import com.entseeker.request.UpdateIngredientRequest;
 import com.entseeker.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -91,4 +92,30 @@ public class IngredientController {
         return new ResponseEntity<>(res, HttpStatus.OK);
 
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<IngredientsItem> updateIngredient(@RequestBody UpdateIngredientRequest req,
+                                                            @PathVariable Long id,
+                                                            @RequestHeader("Authorization") String jwt)
+            throws Exception {
+
+        IngredientsItem ingredient = ingredientsService.updateIngredient(req.getName(), id);
+
+        return new ResponseEntity<>(ingredient, HttpStatus.OK);
+    }
+
+    @PutMapping("/category/{id}")
+    public ResponseEntity<IngredientCategory> updateIngredientCategory(@RequestBody UpdateIngredientRequest req,
+                                                            @PathVariable Long id,
+                                                            @RequestHeader("Authorization") String jwt)
+            throws Exception {
+
+        IngredientCategory category = ingredientsService.updateIngredientCategory(req.getName(), id);
+
+        return new ResponseEntity<>(category, HttpStatus.OK);
+    }
+
+
+
+
 }

@@ -87,6 +87,31 @@ public class IngredientServiceImp implements IngredientsService {
         return ingredientItemRepository.save(ingredientsItem);
     }
 
+    @Override
+    public IngredientsItem updateIngredient(String name, Long id) throws Exception {
+        Optional<IngredientsItem> optionalIngredientsItem = ingredientItemRepository.findById(id);
+        if(optionalIngredientsItem.isEmpty()) {
+            throw new Exception("Ingredient not found");
+        }
+        IngredientsItem ingredientsItem = optionalIngredientsItem.get();
+        if (name != null && !name.isEmpty()) {
+            ingredientsItem.setName(name);
+        }
+        return ingredientItemRepository.save(ingredientsItem);
+    }
+
+    @Override
+    public IngredientCategory updateIngredientCategory(String name, Long id) throws Exception {
+        Optional<IngredientCategory> optionalIngredientCategory = ingredientCategoryRepository.findById(id);
+        if(optionalIngredientCategory.isEmpty()) {
+            throw new Exception("Ingredient not found");
+        }
+        IngredientCategory ingredientCategory = optionalIngredientCategory.get();
+        if (name != null && !name.isEmpty()) {
+            ingredientCategory.setName(name);
+        }
+        return ingredientCategoryRepository.save(ingredientCategory);
+    }
 
 
     @Override
