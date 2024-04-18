@@ -11,6 +11,8 @@ import {
   GET_INGREDIENT_CATEGORY_REQUEST,
   GET_INGREDIENT_CATEGORY_SUCCESS,
   GET_INGREDIENT_CATEGORY_FAILURE,
+  DELETE_INGREDIENT_SUCCESS,
+  DELETE_INGREDIENT_CATEGORY_SUCCESS,
 } from "./ActionType";
 
 export const getIngredientsOfRestaurants =
@@ -106,6 +108,47 @@ export const updateStockOfIngredient =
       );
       dispatch({ type: UPDATE_STOCK, payload: data });
       console.log("Updated Stock data", data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+export const deleteIngredient =
+  ({ jwt, ingredientId }) =>
+  async (dispatch) => {
+    try {
+      const { data } = await api.delete(
+        `api/admin/ingredients/${ingredientId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+      dispatch({ type: DELETE_INGREDIENT_SUCCESS, payload: ingredientId });
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+export const deleteIngredientCategory =
+  ({ categoryId, jwt }) =>
+  async (dispatch) => {
+    try {
+      const { data } = await api.delete(
+        `api/admin/ingredients/category/${categoryId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+      dispatch({
+        type: DELETE_INGREDIENT_CATEGORY_SUCCESS,
+        payload: categoryId,
+      });
+      console.log(data);
     } catch (err) {
       console.log(err);
     }

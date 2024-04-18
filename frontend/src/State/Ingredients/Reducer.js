@@ -1,11 +1,16 @@
 import { CREATE_CATEGORY_SUCCESS } from "../Restaurant/ActionType";
 import {
-  CREATE_INGREDIENT,
   CREATE_INGREDIENT_CATEGORY_SUCCESS,
   CREATE_INGREDIENT_SUCCESS,
   GET_INGREDIENTS,
   GET_INGREDIENT_CATEGORY_SUCCESS,
   UPDATE_STOCK,
+  DELETE_INGREDIENT_CATEGORY_REQUEST,
+  DELETE_INGREDIENT_CATEGORY_SUCCESS,
+  DELETE_INGREDIENT_CATEGORY_FAILURE,
+  DELETE_INGREDIENT_REQUEST,
+  DELETE_INGREDIENT_SUCCESS,
+  DELETE_INGREDIENT_FAILURE,
 } from "./ActionType";
 
 const initialState = {
@@ -40,6 +45,22 @@ const IngredientsReducer = (state = initialState, action) => {
       return {
         ...state,
         ingredients: [...state.ingredients, action.payload],
+      };
+
+    case DELETE_INGREDIENT_SUCCESS:
+      return {
+        ...state,
+        ingredients: state.ingredients.filter(
+          (ingredient) => ingredient.id !== action.payload
+        ),
+      };
+
+    case DELETE_INGREDIENT_CATEGORY_SUCCESS:
+      return {
+        ...state,
+        category: state.category.filter(
+          (category) => category.id !== action.payload
+        ),
       };
 
     case UPDATE_STOCK:

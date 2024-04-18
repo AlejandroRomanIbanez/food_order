@@ -13,11 +13,12 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
-import { Create } from "@mui/icons-material";
+import { Create, Delete } from "@mui/icons-material";
 import CreateFormModal from "../FormModal/CreateFormModal";
 import CreateIngredientForm from "./CreateIngredientForm";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deleteIngredient,
   getIngredientsOfRestaurants,
   updateStockOfIngredient,
 } from "../../State/Ingredients/Action";
@@ -49,6 +50,15 @@ const IngredientsTable = () => {
     );
   };
 
+  const handleDeleteIngredient = (id) => {
+    dispatch(
+      deleteIngredient({
+        jwt,
+        ingredientId: id,
+      })
+    );
+  };
+
   return (
     <Box>
       <Card className="mt-1">
@@ -69,6 +79,7 @@ const IngredientsTable = () => {
                 <TableCell align="right">Name</TableCell>
                 <TableCell align="right">Category</TableCell>
                 <TableCell align="right">Availability</TableCell>
+                <TableCell align="right">Delete</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -91,6 +102,14 @@ const IngredientsTable = () => {
                     >
                       {ingredient.inStock ? "Available" : "Not Available"}
                     </Button>
+                  </TableCell>
+                  <TableCell align="right">
+                    <IconButton>
+                      <Delete
+                        color="primary"
+                        onClick={() => handleDeleteIngredient(ingredient.id)}
+                      />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))}
