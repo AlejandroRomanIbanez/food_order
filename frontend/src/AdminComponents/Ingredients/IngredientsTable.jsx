@@ -82,7 +82,7 @@ const IngredientsTable = () => {
                   </TableCell>
                   <TableCell align="right">{ingredient.name}</TableCell>
                   <TableCell align="right">
-                    {ingredient.category.name}
+                    {ingredient.category?.name}
                   </TableCell>
                   <TableCell align="right">
                     <Button

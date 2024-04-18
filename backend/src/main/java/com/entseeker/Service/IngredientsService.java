@@ -22,4 +22,6 @@ public interface IngredientsService {
     public IngredientsItem updateStock(Long id) throws Exception;
 
     public void deleteIngredientById(Long id) throws Exception;
+
+    public void deleteIngredientCategoryById(Long id) throws Exception;
 }

@@ -78,4 +78,17 @@ public class IngredientController {
         return new ResponseEntity<>(res, HttpStatus.OK);
 
     }
+    @DeleteMapping("/category/{id}")
+    public ResponseEntity<MessageResponse> deleteIngredientCategoryById(
+            @RequestHeader("Authorization") String jwt,
+            @PathVariable Long id) throws Exception {
+
+        ingredientsService.deleteIngredientCategoryById(id);
+
+        MessageResponse res = new MessageResponse();
+        res.setMessage("Deleted successfully");
+
+        return new ResponseEntity<>(res, HttpStatus.OK);
+
+    }
 }

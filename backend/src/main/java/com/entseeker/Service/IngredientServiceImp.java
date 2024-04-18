@@ -102,6 +102,21 @@ public class IngredientServiceImp implements IngredientsService {
         ingredientItemRepository.delete(ingredient);
     }
 
+    public void deleteIngredientCategoryById(Long id) throws Exception {
+        IngredientCategory category = findIngredientCategoryById(id);
+
+        List<IngredientsItem> ingredients = ingredientCategoryRepository.findByCategoryId(id);
+
+        for (IngredientsItem ingredient : ingredients) {
+            ingredient.setCategory(null);
+            ingredientItemRepository.save(ingredient);
+        }
+
+
+        ingredientCategoryRepository.delete(category);
+    }
+
+
     private IngredientsItem findIngredientsItemById(Long id) throws Exception {
 
         Optional<IngredientsItem> optional = ingredientItemRepository.findById(id);
