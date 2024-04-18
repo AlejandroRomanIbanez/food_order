@@ -1,8 +1,10 @@
 package com.entseeker.Service;
 
+import com.entseeker.model.Food;
 import com.entseeker.model.IngredientCategory;
 import com.entseeker.model.IngredientsItem;
 import com.entseeker.model.Restaurant;
+import com.entseeker.repository.FoodRepository;
 import com.entseeker.repository.IngredientCategoryRepository;
 import com.entseeker.repository.IngredientItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class IngredientServiceImp implements IngredientsService {
 
     @Autowired
     private RestaurantService restaurantService;
+
+    @Autowired
+    private FoodRepository foodRepository;
 
     @Override
     public IngredientCategory createIngredientCategory(String name, Long restaurantId) throws Exception {
@@ -80,5 +85,29 @@ public class IngredientServiceImp implements IngredientsService {
         IngredientsItem ingredientsItem = optionalIngredientsItem.get();
         ingredientsItem.setInStock(!ingredientsItem.isInStock());
         return ingredientItemRepository.save(ingredientsItem);
+    }
+
+
+
+    @Override
+    public void deleteIngredientById(Long id) throws Exception {
+        IngredientsItem ingredient = findIngredientsItemById(id);
+
+        List<Food> foods = foodRepository.findByIngredientsContaining(ingredient);
+        for (Food food : foods) {
+            food.getIngredients().remove(ingredient);
+            foodRepository.save(food);
+        }
+
+        ingredientItemRepository.delete(ingredient);
+    }
+
+    private IngredientsItem findIngredientsItemById(Long id) throws Exception {
+
+        Optional<IngredientsItem> optional = ingredientItemRepository.findById(id);
+        if(optional.isEmpty()) {
+            throw new Exception("Ingredient not found");
+        }
+        return optional.get();
     }
 }

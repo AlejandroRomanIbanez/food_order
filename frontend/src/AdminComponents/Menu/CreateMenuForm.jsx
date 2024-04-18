@@ -202,7 +202,6 @@ const CreateMenuForm = () => {
                       ))}
                     </Box>
                   )}
-                  //MenuProps={MenuProps}
                 >
                   {ingredients.ingredients?.map((ingredient) => (
                     <MenuItem key={ingredient.id} value={ingredient}>

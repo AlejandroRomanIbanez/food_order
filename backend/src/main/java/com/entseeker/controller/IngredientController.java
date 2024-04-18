@@ -1,10 +1,13 @@
 package com.entseeker.controller;
 
 import com.entseeker.Service.IngredientsService;
+import com.entseeker.Service.UserService;
 import com.entseeker.model.IngredientCategory;
 import com.entseeker.model.IngredientsItem;
+import com.entseeker.model.User;
 import com.entseeker.request.IngredientCategoryRequest;
 import com.entseeker.request.IngredientRequest;
+import com.entseeker.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,8 @@ public class IngredientController {
 
     @Autowired
     private IngredientsService ingredientsService;
+
+    private UserService userService;
 
     @PostMapping("/category")
     public ResponseEntity<IngredientCategory> createIngredientCategory(@RequestBody IngredientCategoryRequest req)
@@ -58,5 +63,19 @@ public class IngredientController {
 
         List<IngredientCategory> items = ingredientsService.findIngredientCategoryByRestaurantId(restaurantId);
         return new ResponseEntity<>(items, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageResponse> deleteIngredientById(
+            @RequestHeader("Authorization") String jwt,
+            @PathVariable Long id) throws Exception {
+
+        ingredientsService.deleteIngredientById(id);
+
+        MessageResponse res = new MessageResponse();
+        res.setMessage("Deleted successfully");
+
+        return new ResponseEntity<>(res, HttpStatus.OK);
+
     }
 }

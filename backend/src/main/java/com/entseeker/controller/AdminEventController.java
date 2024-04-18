@@ -60,7 +60,7 @@ public class AdminEventController {
     @DeleteMapping("/{eventId}")
     public ResponseEntity<MessageResponse> deleteEvent(@RequestHeader("Authorization") String jwt,
                                                        @PathVariable Long eventId ) throws Exception {
-        User user = userService.findUserByJwtToken(jwt);
+
         eventService.deleteEvent(eventId);
 
         MessageResponse res = new MessageResponse();
