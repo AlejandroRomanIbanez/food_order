@@ -133,7 +133,7 @@ export const deleteIngredient =
   };
 
 export const deleteIngredientCategory =
-  ({ categoryId, jwt }) =>
+  ({ jwt, categoryId }) =>
   async (dispatch) => {
     try {
       const { data } = await api.delete(

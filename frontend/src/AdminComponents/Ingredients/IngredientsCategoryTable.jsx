@@ -16,7 +16,10 @@ import { Create, Delete } from "@mui/icons-material";
 import CreateFormModal from "../FormModal/CreateFormModal";
 import CreateIngredientCategoryForm from "./CreateIngredientCategoryForm";
 import { useDispatch, useSelector } from "react-redux";
-import { getIngredientCategory } from "../../State/Ingredients/Action";
+import {
+  deleteIngredientCategory,
+  getIngredientCategory,
+} from "../../State/Ingredients/Action";
 
 const orders = [1, 1, 1, 1, 1, 1, 1];
 
@@ -38,6 +41,15 @@ const IngredientsCategoryTable = () => {
     );
   }, []);
 
+  const handleDeleteIngredientCategory = (id) => {
+    dispatch(
+      deleteIngredientCategory({
+        jwt,
+        categoryId: id,
+      })
+    );
+  };
+
   return (
     <Box>
       <Card className="mt-1">
@@ -56,6 +68,7 @@ const IngredientsCategoryTable = () => {
               <TableRow>
                 <TableCell align="left">Id</TableCell>
                 <TableCell align="left">Name</TableCell>
+                <TableCell align="right">Delete</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -68,6 +81,16 @@ const IngredientsCategoryTable = () => {
                     {category.id}
                   </TableCell>
                   <TableCell align="left">{category.name}</TableCell>
+                  <TableCell align="right">
+                    <IconButton>
+                      <Delete
+                        color="primary"
+                        onClick={() =>
+                          handleDeleteIngredientCategory(category.id)
+                        }
+                      />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

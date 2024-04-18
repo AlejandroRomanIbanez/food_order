@@ -56,11 +56,25 @@ const IngredientsReducer = (state = initialState, action) => {
       };
 
     case DELETE_INGREDIENT_CATEGORY_SUCCESS:
+      const filteredCategories = state.category.filter(
+        (category) => category.id !== action.payload
+      );
+
+      const updatedIngredients = state.ingredients.map((ingredient) => {
+        if (ingredient.category.id === action.payload) {
+          return {
+            ...ingredient,
+            category: null,
+          };
+        } else {
+          return ingredient;
+        }
+      });
+
       return {
         ...state,
-        category: state.category.filter(
-          (category) => category.id !== action.payload
-        ),
+        ingredients: updatedIngredients,
+        category: filteredCategories,
       };
 
     case UPDATE_STOCK:
