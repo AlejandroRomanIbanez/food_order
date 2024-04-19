@@ -2,9 +2,17 @@ import React, { useState } from "react";
 import { TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { createIngredientCategory } from "../../State/Ingredients/Action";
+import {
+  createIngredientCategory,
+  updateIngredientCategory,
+} from "../../State/Ingredients/Action";
 
-const CreateIngredientCategoryForm = ({ handleClose }) => {
+const CreateIngredientCategoryForm = ({
+  handleClose,
+  isEdit,
+  setIsEdit,
+  selectedCategory,
+}) => {
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
   const { restaurant } = useSelector((store) => store);
@@ -18,9 +26,18 @@ const CreateIngredientCategoryForm = ({ handleClose }) => {
       name: formData.name,
       restaurantId: restaurant.usersRestaurants?.id,
     };
+    const editedData = {
+      name: formData.name,
+      id: selectedCategory.id,
+    };
     console.log(formData);
 
-    dispatch(createIngredientCategory({ category: data, jwt }));
+    if (isEdit) {
+      dispatch(updateIngredientCategory({ category: editedData, jwt }));
+      setIsEdit(false);
+    } else {
+      dispatch(createIngredientCategory({ category: data, jwt }));
+    }
     handleClose();
   };
 
@@ -33,7 +50,7 @@ const CreateIngredientCategoryForm = ({ handleClose }) => {
     <div className="">
       <div className="p-5">
         <h1 className="text-gray-400 text-center text-xl pb-10">
-          Create Ingredient Category
+          {isEdit ? "Edit Ingredient Category" : "Create Ingredient Category"}
         </h1>
         <form className="space-y-5" onSubmit={handleSubmit}>
           <TextField
@@ -47,7 +64,7 @@ const CreateIngredientCategoryForm = ({ handleClose }) => {
           ></TextField>
           <div className="flex justify-center">
             <Button variant="contained" type="submit">
-              Create Category
+              {isEdit ? "Edit Category" : "Create Category"}
             </Button>
           </div>
         </form>

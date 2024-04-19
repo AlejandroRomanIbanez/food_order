@@ -7,6 +7,8 @@ import {
   UPDATE_STOCK,
   DELETE_INGREDIENT_CATEGORY_SUCCESS,
   DELETE_INGREDIENT_SUCCESS,
+  UPDATE_INGREDIENT_SUCCESS,
+  UPDATE_INGREDIENT_CATEGORY_SUCCESS,
 } from "./ActionType";
 
 const initialState = {
@@ -71,6 +73,32 @@ const IngredientsReducer = (state = initialState, action) => {
         ...state,
         ingredients: updatedIngredients,
         category: filteredCategories,
+      };
+
+    case UPDATE_INGREDIENT_SUCCESS:
+      return {
+        ...state,
+        ingredients: state.ingredients.map((ingredient) =>
+          ingredient.id === action.payload.id ? action.payload : ingredient
+        ),
+      };
+
+    case UPDATE_INGREDIENT_CATEGORY_SUCCESS:
+      return {
+        ...state,
+        ingredients: state.ingredients.map((ingredient) => {
+          if (ingredient.category.id === action.payload.id) {
+            return {
+              ...ingredient,
+              category: action.payload,
+            };
+          } else {
+            return ingredient;
+          }
+        }),
+        category: state.category.map((category) =>
+          category.id === action.payload.id ? action.payload : category
+        ),
       };
 
     case UPDATE_STOCK:

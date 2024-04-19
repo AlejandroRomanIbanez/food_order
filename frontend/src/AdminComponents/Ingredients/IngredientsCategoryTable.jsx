@@ -12,16 +12,15 @@ import {
   TableRow,
   IconButton,
 } from "@mui/material";
-import { Create, Delete } from "@mui/icons-material";
+import { Create, Delete, Edit } from "@mui/icons-material";
 import CreateFormModal from "../FormModal/CreateFormModal";
 import CreateIngredientCategoryForm from "./CreateIngredientCategoryForm";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteIngredientCategory,
   getIngredientCategory,
+  updateIngredientCategory,
 } from "../../State/Ingredients/Action";
-
-const orders = [1, 1, 1, 1, 1, 1, 1];
 
 const IngredientsCategoryTable = () => {
   const [open, setOpen] = useState(false);
@@ -31,6 +30,8 @@ const IngredientsCategoryTable = () => {
   const jwt = localStorage.getItem("jwt");
   const dispatch = useDispatch();
   const { restaurant, ingredients } = useSelector((store) => store);
+  const [isEdit, setIsEdit] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   useEffect(() => {
     dispatch(
@@ -48,6 +49,12 @@ const IngredientsCategoryTable = () => {
         categoryId: id,
       })
     );
+  };
+
+  const handleUpdateIngredientCategory = (category) => {
+    setOpen(true);
+    setSelectedCategory(category);
+    setIsEdit(true);
   };
 
   return (
@@ -68,7 +75,7 @@ const IngredientsCategoryTable = () => {
               <TableRow>
                 <TableCell align="left">Id</TableCell>
                 <TableCell align="left">Name</TableCell>
-                <TableCell align="right">Delete</TableCell>
+                <TableCell align="right">Edit/Delete</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -82,6 +89,11 @@ const IngredientsCategoryTable = () => {
                   </TableCell>
                   <TableCell align="left">{category.name}</TableCell>
                   <TableCell align="right">
+                    <IconButton>
+                      <Edit
+                        onClick={() => handleUpdateIngredientCategory(category)}
+                      />
+                    </IconButton>
                     <IconButton>
                       <Delete
                         color="primary"
@@ -101,6 +113,9 @@ const IngredientsCategoryTable = () => {
         open={open}
         handleClose={handleClose}
         formComponent={CreateIngredientCategoryForm}
+        isEdit={isEdit}
+        setIsEdit={setIsEdit}
+        selectedCategory={selectedCategory}
       />
     </Box>
   );

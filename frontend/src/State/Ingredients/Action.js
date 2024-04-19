@@ -13,6 +13,7 @@ import {
   GET_INGREDIENT_CATEGORY_FAILURE,
   DELETE_INGREDIENT_SUCCESS,
   DELETE_INGREDIENT_CATEGORY_SUCCESS,
+  UPDATE_INGREDIENT_CATEGORY_SUCCESS,
 } from "./ActionType";
 
 export const getIngredientsOfRestaurants =
@@ -151,5 +152,45 @@ export const deleteIngredientCategory =
       console.log(data);
     } catch (err) {
       console.log(err);
+    }
+  };
+
+export const updateIngredient =
+  ({ ingredient, jwt }) =>
+  async (dispatch) => {
+    try {
+      const { data } = await api.put(
+        `api/admin/ingredients/${ingredient.id}`,
+        ingredient,
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+      dispatch({ type: CREATE_INGREDIENT_SUCCESS, payload: data });
+      console.log("Updated Ingredient data", data);
+    } catch (err) {
+      console.log("error", err);
+    }
+  };
+
+export const updateIngredientCategory =
+  ({ category, jwt }) =>
+  async (dispatch) => {
+    try {
+      const { data } = await api.put(
+        `api/admin/ingredients/category/${category.id}`,
+        category,
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+      dispatch({ type: UPDATE_INGREDIENT_CATEGORY_SUCCESS, payload: data });
+      console.log("Updated Ingredient Category data", data);
+    } catch (err) {
+      console.log("error", err);
     }
   };
