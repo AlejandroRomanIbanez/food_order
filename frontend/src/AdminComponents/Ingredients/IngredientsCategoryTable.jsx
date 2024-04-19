@@ -24,9 +24,7 @@ import {
 
 const IngredientsCategoryTable = () => {
   const [open, setOpen] = useState(false);
-
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
   const jwt = localStorage.getItem("jwt");
   const dispatch = useDispatch();
   const { restaurant, ingredients } = useSelector((store) => store);
@@ -41,6 +39,11 @@ const IngredientsCategoryTable = () => {
       })
     );
   }, []);
+
+  const handleClose = () => {
+    setIsEdit(false);
+    setOpen(false);
+  };
 
   const handleDeleteIngredientCategory = (id) => {
     dispatch(
@@ -115,7 +118,7 @@ const IngredientsCategoryTable = () => {
         formComponent={CreateIngredientCategoryForm}
         isEdit={isEdit}
         setIsEdit={setIsEdit}
-        selectedCategory={selectedCategory}
+        selectedUpdate={selectedCategory}
       />
     </Box>
   );

@@ -14,6 +14,7 @@ import {
   DELETE_INGREDIENT_SUCCESS,
   DELETE_INGREDIENT_CATEGORY_SUCCESS,
   UPDATE_INGREDIENT_CATEGORY_SUCCESS,
+  UPDATE_INGREDIENT_SUCCESS,
 } from "./ActionType";
 
 export const getIngredientsOfRestaurants =
@@ -168,7 +169,7 @@ export const updateIngredient =
           },
         }
       );
-      dispatch({ type: CREATE_INGREDIENT_SUCCESS, payload: data });
+      dispatch({ type: UPDATE_INGREDIENT_SUCCESS, payload: data });
       console.log("Updated Ingredient data", data);
     } catch (err) {
       console.log("error", err);

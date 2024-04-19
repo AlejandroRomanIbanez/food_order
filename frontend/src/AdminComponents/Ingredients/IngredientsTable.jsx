@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Card,
@@ -13,7 +13,7 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
-import { Create, Delete } from "@mui/icons-material";
+import { Create, Delete, Edit } from "@mui/icons-material";
 import CreateFormModal from "../FormModal/CreateFormModal";
 import CreateIngredientForm from "./CreateIngredientForm";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,10 +26,11 @@ import {
 const IngredientsTable = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
   const { restaurant, ingredients } = useSelector((store) => store);
+  const [isEdit, setIsEdit] = useState(false);
+  const [selectedIngredient, setSelectedIngredient] = useState(null);
   console.log("ingredients", ingredients);
 
   useEffect(() => {
@@ -40,6 +41,11 @@ const IngredientsTable = () => {
       })
     );
   }, []);
+
+  const handleClose = () => {
+    setIsEdit(false);
+    setOpen(false);
+  };
 
   const handleUpdateStock = (id) => {
     dispatch(
@@ -57,6 +63,12 @@ const IngredientsTable = () => {
         ingredientId: id,
       })
     );
+  };
+
+  const handleUpdateIngredient = (ingredient) => {
+    setOpen(true);
+    setSelectedIngredient(ingredient);
+    setIsEdit(true);
   };
 
   return (
@@ -105,6 +117,11 @@ const IngredientsTable = () => {
                   </TableCell>
                   <TableCell align="right">
                     <IconButton>
+                      <Edit
+                        onClick={() => handleUpdateIngredient(ingredient)}
+                      />
+                    </IconButton>
+                    <IconButton>
                       <Delete
                         color="primary"
                         onClick={() => handleDeleteIngredient(ingredient.id)}
@@ -121,6 +138,9 @@ const IngredientsTable = () => {
         open={open}
         handleClose={handleClose}
         formComponent={CreateIngredientForm}
+        isEdit={isEdit}
+        setIsEdit={setIsEdit}
+        selectedUpdate={selectedIngredient}
       />
     </Box>
   );

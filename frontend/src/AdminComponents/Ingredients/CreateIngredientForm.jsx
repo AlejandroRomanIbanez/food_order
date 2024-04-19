@@ -8,9 +8,17 @@ import {
   MenuItem,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { createIngredient } from "./../../State/Ingredients/Action";
+import {
+  createIngredient,
+  updateIngredient,
+} from "./../../State/Ingredients/Action";
 
-const CreateIngredientForm = ({ handleClose }) => {
+const CreateIngredientForm = ({
+  handleClose,
+  isEdit,
+  setIsEdit,
+  selectedUpdate,
+}) => {
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
   const { restaurant, ingredients } = useSelector((store) => store);
@@ -24,8 +32,18 @@ const CreateIngredientForm = ({ handleClose }) => {
       ...formData,
       restaurantId: restaurant.usersRestaurants?.id,
     };
+    const editedData = {
+      ...formData,
+      id: selectedUpdate.id,
+    };
 
-    dispatch(createIngredient({ ingredient: data, jwt }));
+    if (isEdit) {
+      delete editedData.categoryId;
+      dispatch(updateIngredient({ ingredient: editedData, jwt }));
+      setIsEdit(false);
+    } else {
+      dispatch(createIngredient({ ingredient: data, jwt }));
+    }
     console.log(data);
     handleClose();
   };
@@ -39,7 +57,7 @@ const CreateIngredientForm = ({ handleClose }) => {
     <div className="">
       <div className="p-5">
         <h1 className="text-gray-400 text-center text-xl pb-10">
-          Create Ingredient
+          {isEdit ? "Edit Ingredient" : "Create Ingredient"}
         </h1>
         <form className="space-y-5" onSubmit={handleSubmit}>
           <TextField
@@ -51,24 +69,26 @@ const CreateIngredientForm = ({ handleClose }) => {
             onChange={handleInputChange}
             value={FormData.category}
           ></TextField>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Category</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={formData.ingredientCategoryId}
-              name="categoryId"
-              label="Category"
-              onChange={handleInputChange}
-            >
-              {ingredients.category.map((category) => (
-                <MenuItem value={category.id}>{category.name}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          {!isEdit && (
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Category</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={formData.ingredientCategoryId}
+                name="categoryId"
+                label="Category"
+                onChange={handleInputChange}
+              >
+                {ingredients.category.map((category) => (
+                  <MenuItem value={category.id}>{category.name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
           <div className="flex justify-center">
             <Button variant="contained" type="submit">
-              Create Ingredient
+              {isEdit ? "Edit Ingredient" : "Create Ingredient"}
             </Button>
           </div>
         </form>

@@ -23,7 +23,7 @@ const CreateFormModal = ({
   isEdit,
   cartEvent,
   setIsEdit,
-  selectedCategory,
+  selectedUpdate,
 }) => {
   return (
     <>
@@ -39,7 +39,7 @@ const CreateFormModal = ({
             isEdit={isEdit}
             cartEvent={cartEvent}
             setIsEdit={setIsEdit}
-            selectedCategory={selectedCategory}
+            selectedUpdate={selectedUpdate}
           />
         </Box>
       </Modal>

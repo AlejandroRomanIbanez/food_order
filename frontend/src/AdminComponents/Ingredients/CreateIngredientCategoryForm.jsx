@@ -11,7 +11,7 @@ const CreateIngredientCategoryForm = ({
   handleClose,
   isEdit,
   setIsEdit,
-  selectedCategory,
+  selectedUpdate,
 }) => {
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
@@ -28,7 +28,7 @@ const CreateIngredientCategoryForm = ({
     };
     const editedData = {
       name: formData.name,
-      id: selectedCategory.id,
+      id: selectedUpdate.id,
     };
     console.log(formData);
 
