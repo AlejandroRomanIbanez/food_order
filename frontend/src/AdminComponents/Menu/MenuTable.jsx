@@ -13,6 +13,7 @@ import {
   IconButton,
   Avatar,
   Chip,
+  Button,
 } from "@mui/material";
 import { Create, Delete } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
@@ -20,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   deleteFood,
   getMenuItemsByRestaurantId,
+  updateMenuItemsAvailability,
 } from "../../State/Menu/Action";
 
 const MenuTable = () => {
@@ -47,6 +49,10 @@ const MenuTable = () => {
 
   const handleDeleteMenuItem = (foodId) => {
     dispatch(deleteFood({ foodId, jwt }));
+  };
+
+  const handleUpdateMenuItemsAvailability = (foodId) => {
+    dispatch(updateMenuItemsAvailability({ foodId: foodId, jwt }));
   };
 
   return (
@@ -93,7 +99,12 @@ const MenuTable = () => {
                   </TableCell>
                   <TableCell align="right">{item.price}€</TableCell>
                   <TableCell align="right">
-                    {item.available ? "Available" : "Not Available"}
+                    <Button
+                      color={item.available ? "success" : "error"}
+                      onClick={() => handleUpdateMenuItemsAvailability(item.id)}
+                    >
+                      {item.available ? "Available" : "Not Available"}
+                    </Button>
                   </TableCell>
                   <TableCell align="right">
                     {

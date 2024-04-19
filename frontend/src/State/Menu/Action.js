@@ -82,12 +82,17 @@ export const updateMenuItemsAvailability =
   ({ foodId, jwt }) =>
   async (dispatch) => {
     dispatch({ type: UPDATE_MENU_ITEMS_AVAILABILITY_REQUEST });
+    console.log("jwt update", jwt);
     try {
-      const { data } = await api.put(`api/admin/food/${foodId}`, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
+      const { data } = await api.put(
+        `api/admin/food/${foodId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
       dispatch({
         type: UPDATE_MENU_ITEMS_AVAILABILITY_SUCCESS,
         payload: data,
