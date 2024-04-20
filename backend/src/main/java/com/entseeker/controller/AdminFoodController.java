@@ -56,4 +56,16 @@ public class AdminFoodController {
 
         return new ResponseEntity<>(food, HttpStatus.CREATED);
     }
+
+    @PutMapping("/edit/{foodId}")
+    public ResponseEntity<Food> updateFood(@PathVariable Long foodId,
+                                           @RequestBody CreateFoodRequest req,
+                                           @RequestHeader("Authorization") String jwt)
+            throws Exception {
+
+        User user = userService.findUserByJwtToken(jwt);
+        Food food = foodService.updateFood(foodId, req, req.getCategory());
+
+        return new ResponseEntity<>(food, HttpStatus.CREATED);
+                                           }
 }
