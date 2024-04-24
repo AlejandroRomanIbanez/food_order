@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -41,4 +42,16 @@ public class CategoryController {
 
         return new ResponseEntity<>(categories, HttpStatus.CREATED);
     }
+
+    @PutMapping("/admin/category/{categoryId}")
+    public ResponseEntity<Category> updateCategory(@PathVariable Long categoryId,
+                                                   @RequestBody Map<String, String> requestBody,
+                                                   @RequestHeader("Authorization") String jwt) throws Exception {
+
+        User user = userService.findUserByJwtToken(jwt);
+        String name = requestBody.get("name");
+        Category category = categoryService.updateCategory(categoryId, name);
+
+        return new ResponseEntity<>(category, HttpStatus.CREATED);
+                                                   }
 }

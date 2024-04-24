@@ -44,4 +44,19 @@ public class CategoryServiceImp implements CategoryService {
         }
         return optionalCategory.get();
     }
+
+    @Override
+    public Category updateCategory(Long id, String name) throws Exception {
+        Optional<Category> optionalCategory = categoryRepository.findById(id);
+        if(optionalCategory.isEmpty()){
+            throw new Exception("Category not found");
+        }
+
+        Category category = optionalCategory.get();
+        if(name != null && !name.isEmpty()) {
+            category.setName(name);
+        }
+
+        return categoryRepository.save(category);
+    }
 }
