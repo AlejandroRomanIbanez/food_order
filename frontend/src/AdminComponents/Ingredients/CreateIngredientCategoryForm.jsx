@@ -28,7 +28,7 @@ const CreateIngredientCategoryForm = ({
     };
     const editedData = {
       name: formData.name,
-      id: selectedUpdate.id,
+      id: selectedUpdate?.id,
     };
     console.log(formData);
 

@@ -17,6 +17,7 @@ const menuItemReducer = (state = initialState, action) => {
     case actionTypes.DELETE_MENU_ITEM_REQUEST:
     case actionTypes.UPDATE_MENU_ITEMS_AVAILABILITY_REQUEST:
     case actionTypes.SEARCH_MENU_ITEM_REQUEST:
+    case actionTypes.UPDATE_MENU_ITEM_REQUEST:
       return {
         ...state,
         loading: true,
@@ -67,11 +68,21 @@ const menuItemReducer = (state = initialState, action) => {
         search: action.payload,
       };
 
+    case actionTypes.UPDATE_MENU_ITEM_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        menuItems: state.menuItems.map((menuItem) =>
+          menuItem.id === action.payload.id ? action.payload : menuItem
+        ),
+      };
+
     case actionTypes.CREATE_MENU_ITEM_FAILURE:
     case actionTypes.GET_MENU_ITEMS_BY_RESTAURANT_ID_FAILURE:
     case actionTypes.DELETE_MENU_ITEM_FAILURE:
     case actionTypes.UPDATE_MENU_ITEMS_AVAILABILITY_FAILURE:
     case actionTypes.SEARCH_MENU_ITEM_FAILURE:
+    case actionTypes.UPDATE_MENU_ITEM_FAILURE:
       return {
         ...state,
         loading: false,

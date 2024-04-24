@@ -34,7 +34,7 @@ const CreateIngredientForm = ({
     };
     const editedData = {
       ...formData,
-      id: selectedUpdate.id,
+      id: selectedUpdate?.id,
     };
 
     if (isEdit) {

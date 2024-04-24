@@ -19,7 +19,7 @@ import { darkTheme } from "./../../Theme/DarkTheme";
 import { uploadImageToCloudinary } from "../util/uploadToCloudaniry";
 import Ingredients from "./../Ingredients/Ingredients";
 import { useDispatch, useSelector } from "react-redux";
-import { createMenuItem } from "./../../State/Menu/Action";
+import { createMenuItem, updateMenuItem } from "./../../State/Menu/Action";
 import { getIngredientsOfRestaurants } from "../../State/Ingredients/Action";
 import { useNavigate } from "react-router-dom";
 
@@ -37,15 +37,22 @@ const initialValues = {
   images: [],
 };
 
-const CreateMenuForm = () => {
+const CreateMenuForm = ({ setIsEdit, isEdit, selectedFood }) => {
   const [uploadImage, setUploadImage] = useState(false);
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
   const { restaurant, ingredients } = useSelector((store) => store);
   const navigate = useNavigate();
+  console.log("selectedFood", selectedFood);
   const formik = useFormik({
     initialValues,
     onSubmit: (values) => {
+      if (isEdit) {
+        values.id = selectedFood?.id;
+        dispatch(updateMenuItem({ menuItem: values, jwt }));
+        setIsEdit(false);
+        return;
+      }
       values.restaurantId = restaurant.usersRestaurants?.id;
       dispatch(createMenuItem({ menu: values, jwt }));
       console.log("data form:", values);
@@ -76,10 +83,27 @@ const CreateMenuForm = () => {
     );
   }, []);
 
+  useEffect(() => {
+    if (isEdit && selectedFood) {
+      formik.setValues({
+        name: selectedFood?.name,
+        description: selectedFood?.description,
+        price: selectedFood?.price,
+        category: selectedFood?.foodCategory,
+        vegetarian: selectedFood?.vegetarian,
+        seasonal: selectedFood?.seasonal,
+        ingredients: selectedFood?.ingredients,
+        images: selectedFood?.images,
+      });
+    }
+  }, [selectedFood]);
+
   return (
     <div className="py-10 px-5 lg:flex items-center justify-center min-h-screen">
       <div className="lg:max-w-4xl">
-        <h1 className="font-bold text-2xl text-center py-2">Add New Menu</h1>
+        <h1 className="font-bold text-2xl text-center py-2">
+          {isEdit ? "Edit Menu" : "Add New Menu"}
+        </h1>
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           <Grid container spacing={2}>
             <Grid className="flex flex-wrap gap-5" item xs={12}>
@@ -250,7 +274,7 @@ const CreateMenuForm = () => {
           </Grid>
           <Grid className="flex justify-center">
             <Button variant="contained" type="submit" color="primary">
-              Create Menu
+              {isEdit ? "Edit Menu" : "Create Menu"}
             </Button>
           </Grid>
         </form>

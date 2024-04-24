@@ -15,6 +15,9 @@ import {
   UPDATE_MENU_ITEMS_AVAILABILITY_FAILURE,
   UPDATE_MENU_ITEMS_AVAILABILITY_REQUEST,
   UPDATE_MENU_ITEMS_AVAILABILITY_SUCCESS,
+  UPDATE_MENU_ITEM_FAILURE,
+  UPDATE_MENU_ITEM_REQUEST,
+  UPDATE_MENU_ITEM_SUCCESS,
 } from "./ActionType";
 
 export const createMenuItem =
@@ -118,6 +121,28 @@ export const deleteFood =
       console.log("Deleted Food data", data);
     } catch (err) {
       dispatch({ type: DELETE_MENU_ITEM_FAILURE, payload: err });
+      console.log("error", err);
+    }
+  };
+
+export const updateMenuItem =
+  ({ menuItem, jwt }) =>
+  async (dispatch) => {
+    dispatch({ type: UPDATE_MENU_ITEM_REQUEST });
+    try {
+      const { data } = await api.put(
+        `api/admin/food/edit/${menuItem.id}`,
+        menuItem,
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+      dispatch({ type: UPDATE_MENU_ITEM_SUCCESS, payload: data });
+      console.log("Updated MenuItem data", data);
+    } catch (err) {
+      dispatch({ type: UPDATE_MENU_ITEM_FAILURE, payload: err });
       console.log("error", err);
     }
   };
