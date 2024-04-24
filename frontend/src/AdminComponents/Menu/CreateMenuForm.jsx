@@ -211,8 +211,23 @@ const CreateMenuForm = ({ setIsEdit, isEdit, selectedFood }) => {
                   id="demo-multiple-chip"
                   name="ingredients"
                   multiple
-                  value={formik.values.ingredients}
-                  onChange={formik.handleChange}
+                  value={formik.values.ingredients.map(
+                    (ingredient) => ingredient.id
+                  )}
+                  onChange={(event) => {
+                    const {
+                      target: { value },
+                    } = event;
+                    formik.setFieldValue(
+                      "ingredients",
+                      value.map(
+                        (id) =>
+                          ingredients.ingredients.find(
+                            (ingredient) => ingredient.id === id
+                          ) || ""
+                      )
+                    );
+                  }}
                   input={
                     <OutlinedInput
                       id="select-multiple-chip"
@@ -222,13 +237,20 @@ const CreateMenuForm = ({ setIsEdit, isEdit, selectedFood }) => {
                   renderValue={(selected) => (
                     <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                       {selected.map((value) => (
-                        <Chip key={value.id} label={value.name} />
+                        <Chip
+                          key={value}
+                          label={
+                            ingredients.ingredients.find(
+                              (ingredient) => ingredient.id === value
+                            )?.name
+                          }
+                        />
                       ))}
                     </Box>
                   )}
                 >
                   {ingredients.ingredients?.map((ingredient) => (
-                    <MenuItem key={ingredient.id} value={ingredient}>
+                    <MenuItem key={ingredient.id} value={ingredient.id}>
                       {ingredient.name}
                     </MenuItem>
                   ))}
