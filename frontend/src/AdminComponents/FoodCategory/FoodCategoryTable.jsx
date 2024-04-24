@@ -12,7 +12,7 @@ import {
   TableRow,
   IconButton,
 } from "@mui/material";
-import { Create } from "@mui/icons-material";
+import { Create, Edit } from "@mui/icons-material";
 import CreateFoodCategoryForm from "./CreateFoodCategoryForm";
 import CreateFormModal from "../FormModal/CreateFormModal";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,9 +25,14 @@ const FoodCategoryTable = () => {
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
   const [open, setOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setIsEdit(false);
+    setOpen(false);
+  };
 
   useEffect(() => {
     dispatch(
@@ -37,6 +42,12 @@ const FoodCategoryTable = () => {
       })
     );
   }, []);
+
+  const handleEditCategory = (category) => {
+    setSelectedCategory(category);
+    setIsEdit(true);
+    setOpen(true);
+  };
 
   return (
     <Box>
@@ -56,6 +67,7 @@ const FoodCategoryTable = () => {
               <TableRow>
                 <TableCell align="left">Id</TableCell>
                 <TableCell align="left">Name</TableCell>
+                <TableCell align="right">Edit/Delete</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -68,6 +80,14 @@ const FoodCategoryTable = () => {
                     {category.id}
                   </TableCell>
                   <TableCell align="left">{category.name}</TableCell>
+                  <TableCell align="right">
+                    <IconButton
+                      onClick={() => handleEditCategory(category)}
+                      aria-label="settings"
+                    >
+                      <Edit />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -78,6 +98,9 @@ const FoodCategoryTable = () => {
         open={open}
         handleClose={handleClose}
         formComponent={CreateFoodCategoryForm}
+        isEdit={isEdit}
+        selectedUpdate={selectedCategory}
+        setIsEdit={setIsEdit}
       />
     </Box>
   );

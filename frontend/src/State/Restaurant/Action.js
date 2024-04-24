@@ -42,6 +42,9 @@ import {
   UPDATE_RESTAURANT_EVENT_REQUEST,
   UPDATE_RESTAURANT_EVENT_SUCCESS,
   UPDATE_RESTAURANT_EVENT_FAILURE,
+  UPDATE_RESTAURANT_CATEGORY_REQUEST,
+  UPDATE_RESTAURANT_CATEGORY_SUCCESS,
+  UPDATE_RESTAURANT_CATEGORY_FAILURE,
 } from "./ActionType";
 
 export const getAllRestaurants = (jwt) => async (dispatch) => {
@@ -319,6 +322,28 @@ export const getRestaurantsCategory =
       console.log("Restaurants Category data", data);
     } catch (err) {
       dispatch({ type: GET_RESTAURANTS_CATEGORY_FAILURE, payload: err });
+      console.log("error", err);
+    }
+  };
+
+export const updateRestaurantCategory =
+  ({ data, jwt }) =>
+  async (dispatch) => {
+    dispatch({ type: UPDATE_RESTAURANT_CATEGORY_REQUEST });
+    try {
+      const { data: response } = await api.put(
+        `api/admin/category/${data.id}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+      dispatch({ type: UPDATE_RESTAURANT_CATEGORY_SUCCESS, payload: response });
+      console.log("Updated Restaurant Category data", response);
+    } catch (err) {
+      dispatch({ type: UPDATE_RESTAURANT_CATEGORY_FAILURE, payload: err });
       console.log("error", err);
     }
   };

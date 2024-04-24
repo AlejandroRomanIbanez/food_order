@@ -2,23 +2,35 @@ import React, { useState } from "react";
 import { TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { createCategory } from "../../State/Restaurant/Action";
+import {
+  createCategory,
+  updateRestaurantCategory,
+} from "../../State/Restaurant/Action";
 
-const CreateFoodCategoryForm = ({ handleClose }) => {
+const CreateFoodCategoryForm = ({
+  handleClose,
+  isEdit,
+  setIsEdit,
+  selectedUpdate,
+}) => {
   const { restaurant } = useSelector((store) => store);
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
   const [formData, setFormData] = useState({
     categoryName: "",
-    restaurantId: "",
   });
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = {
       name: formData.categoryName,
-      restaurantId: { id: 1 },
+      id: selectedUpdate?.id,
     };
-    dispatch(createCategory({ reqData: data, jwt: jwt }));
+    if (isEdit) {
+      dispatch(updateRestaurantCategory({ data, jwt: jwt }));
+      setIsEdit(false);
+    } else {
+      dispatch(createCategory({ reqData: data, jwt: jwt }));
+    }
     handleClose();
     console.log(data);
   };
@@ -32,7 +44,7 @@ const CreateFoodCategoryForm = ({ handleClose }) => {
     <div className="">
       <div className="p-5">
         <h1 className="text-gray-400 text-center text-xl pb-10">
-          Create Category
+          {isEdit ? "Edit Category" : "Create Category"}
         </h1>
         <form className="space-y-5" onSubmit={handleSubmit}>
           <TextField
@@ -46,7 +58,7 @@ const CreateFoodCategoryForm = ({ handleClose }) => {
           ></TextField>
           <div className="flex justify-center">
             <Button variant="contained" type="submit">
-              Create Category
+              {isEdit ? "Edit Category" : "Create Category"}
             </Button>
           </div>
         </form>
