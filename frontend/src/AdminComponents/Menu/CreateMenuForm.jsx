@@ -171,7 +171,7 @@ const CreateMenuForm = ({ setIsEdit, isEdit, selectedFood }) => {
                 value={formik.values.description}
               ></TextField>
             </Grid>
-            <Grid item xs={12} lg={6}>
+            <Grid item xs={12} lg={isEdit ? 12 : 6}>
               <TextField
                 fullWidth
                 id="price"
@@ -182,25 +182,29 @@ const CreateMenuForm = ({ setIsEdit, isEdit, selectedFood }) => {
                 value={formik.values.price}
               ></TextField>
             </Grid>
-            <Grid item xs={12} lg={6}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Category</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={formik.values.category}
-                  name="category"
-                  label="Category"
-                  onChange={formik.handleChange}
-                >
-                  {restaurant.categories?.map((category) => (
-                    <MenuItem key={category.id} value={category}>
-                      {category.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
+            {!isEdit && (
+              <Grid item xs={12} lg={6}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    Category
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={formik.values.category}
+                    name="category"
+                    label="Category"
+                    onChange={formik.handleChange}
+                  >
+                    {restaurant.categories?.map((category) => (
+                      <MenuItem key={category.id} value={category}>
+                        {category.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+            )}
             <Grid item xs={12}>
               <FormControl fullWidth>
                 <InputLabel id="demo-multiple-chip-label">
@@ -257,42 +261,46 @@ const CreateMenuForm = ({ setIsEdit, isEdit, selectedFood }) => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} lg={6}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">
-                  Is Seasonal
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={formik.values.seasonal}
-                  name="seasonal"
-                  label="Is Seasonal"
-                  onChange={formik.handleChange}
-                >
-                  <MenuItem value={true}>Yes</MenuItem>
-                  <MenuItem value={false}>No</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} lg={6}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">
-                  Is Vegetarian
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={formik.values.vegetarian}
-                  name="vegetarian"
-                  label="Is Vegetarian"
-                  onChange={formik.handleChange}
-                >
-                  <MenuItem value={true}>Yes</MenuItem>
-                  <MenuItem value={false}>No</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
+            {!isEdit && (
+              <>
+                <Grid item xs={12} lg={6}>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">
+                      Is Seasonal
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={formik.values.seasonal}
+                      name="seasonal"
+                      label="Is Seasonal"
+                      onChange={formik.handleChange}
+                    >
+                      <MenuItem value={true}>Yes</MenuItem>
+                      <MenuItem value={false}>No</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} lg={6}>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">
+                      Is Vegetarian
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={formik.values.vegetarian}
+                      name="vegetarian"
+                      label="Is Vegetarian"
+                      onChange={formik.handleChange}
+                    >
+                      <MenuItem value={true}>Yes</MenuItem>
+                      <MenuItem value={false}>No</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </>
+            )}
           </Grid>
           <Grid className="flex justify-center">
             <Button variant="contained" type="submit" color="primary">

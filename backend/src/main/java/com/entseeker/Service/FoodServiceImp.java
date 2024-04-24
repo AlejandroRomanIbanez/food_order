@@ -146,10 +146,6 @@ public class FoodServiceImp implements FoodService{
             food.setDescription(req.getDescription());
         }
 
-        if (category != null) {
-            food.setFoodCategory(category);
-        }
-
         return foodRepository.save(food);
     }
 }
