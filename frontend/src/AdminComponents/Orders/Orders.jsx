@@ -19,16 +19,20 @@ const OrderStatus = [
     value: "COMPLETED",
   },
   {
+    label: "Out for delivery",
+    value: "OUT_FOR_DELIVERY",
+  },
+  {
     label: "All",
     value: "ALL",
   },
 ];
 
 const Orders = () => {
-  const [filterValue, setFilterValue] = useState();
+  const [filterValue, setFilterValue] = useState("ALL");
 
-  const handleFilter = (event, value) => {
-    setFilterValue(value);
+  const handleFilter = (event) => {
+    setFilterValue(event.target.value);
   };
 
   return (
@@ -56,7 +60,7 @@ const Orders = () => {
           </RadioGroup>
         </FormControl>
       </Card>
-      <OrdersTable />
+      <OrdersTable filterValue={filterValue} />
     </div>
   );
 };
