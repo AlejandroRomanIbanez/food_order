@@ -45,6 +45,9 @@ import {
   UPDATE_RESTAURANT_CATEGORY_REQUEST,
   UPDATE_RESTAURANT_CATEGORY_SUCCESS,
   UPDATE_RESTAURANT_CATEGORY_FAILURE,
+  DELETE_CATEGORY_REQUEST,
+  DELETE_CATEGORY_SUCCESS,
+  DELETE_CATEGORY_FAILURE,
 } from "./ActionType";
 
 export const getAllRestaurants = (jwt) => async (dispatch) => {
@@ -322,6 +325,24 @@ export const getRestaurantsCategory =
       console.log("Restaurants Category data", data);
     } catch (err) {
       dispatch({ type: GET_RESTAURANTS_CATEGORY_FAILURE, payload: err });
+      console.log("error", err);
+    }
+  };
+
+export const deleteCategory =
+  ({ id, jwt }) =>
+  async (dispatch) => {
+    dispatch({ type: DELETE_CATEGORY_REQUEST });
+    try {
+      const { data } = await api.delete(`api/admin/category/${id}`, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+      dispatch({ type: DELETE_CATEGORY_SUCCESS, payload: id });
+      console.log("Deleted Category data", data);
+    } catch (err) {
+      dispatch({ type: DELETE_CATEGORY_FAILURE, payload: err });
       console.log("error", err);
     }
   };

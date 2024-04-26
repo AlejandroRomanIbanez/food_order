@@ -12,11 +12,14 @@ import {
   TableRow,
   IconButton,
 } from "@mui/material";
-import { Create, Edit } from "@mui/icons-material";
+import { Create, Delete, Edit } from "@mui/icons-material";
 import CreateFoodCategoryForm from "./CreateFoodCategoryForm";
 import CreateFormModal from "../FormModal/CreateFormModal";
 import { useDispatch, useSelector } from "react-redux";
-import { getRestaurantsCategory } from "../../State/Restaurant/Action";
+import {
+  deleteCategory,
+  getRestaurantsCategory,
+} from "../../State/Restaurant/Action";
 
 const orders = [1, 1, 1, 1, 1, 1, 1];
 
@@ -42,6 +45,15 @@ const FoodCategoryTable = () => {
       })
     );
   }, []);
+
+  const handleDeleteCategory = (id) => {
+    dispatch(
+      deleteCategory({
+        id: id,
+        jwt,
+      })
+    );
+  };
 
   const handleEditCategory = (category) => {
     setSelectedCategory(category);
@@ -81,6 +93,12 @@ const FoodCategoryTable = () => {
                   </TableCell>
                   <TableCell align="left">{category.name}</TableCell>
                   <TableCell align="right">
+                    <IconButton>
+                      <Delete
+                        color="primary"
+                        onClick={() => handleDeleteCategory(category.id)}
+                      />
+                    </IconButton>
                     <IconButton
                       onClick={() => handleEditCategory(category)}
                       aria-label="settings"

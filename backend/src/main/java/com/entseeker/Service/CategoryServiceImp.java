@@ -3,6 +3,7 @@ package com.entseeker.Service;
 import com.entseeker.model.Category;
 import com.entseeker.model.Restaurant;
 import com.entseeker.repository.CategoryRepository;
+import com.entseeker.repository.FoodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,9 @@ public class CategoryServiceImp implements CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private FoodRepository foodRepository;
 
 
     @Override
@@ -53,6 +57,8 @@ public class CategoryServiceImp implements CategoryService {
         }
 
         Category category = optionalCategory.get();
+
+        foodRepository.removeCategoryFromMatchedFoods(id);
 
         categoryRepository.delete(category);
     }

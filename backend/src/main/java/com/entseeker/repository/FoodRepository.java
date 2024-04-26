@@ -2,7 +2,9 @@ package com.entseeker.repository;
 
 import com.entseeker.model.Food;
 import com.entseeker.model.IngredientsItem;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -17,4 +19,9 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
 
     @Query("SELECT f FROM Food f JOIN f.ingredients i WHERE i = :ingredient")
     List<Food> findByIngredientsContaining(IngredientsItem ingredient);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Food f SET f.foodCategory = null WHERE f.foodCategory.id = :categoryId")
+    void removeCategoryFromMatchedFoods(@Param("categoryId") Long categoryId);
 }
