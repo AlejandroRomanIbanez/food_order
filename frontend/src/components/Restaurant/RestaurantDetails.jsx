@@ -178,9 +178,15 @@ const RestaurantDetails = () => {
           </div>
         </div>
         <div className="space-y-5 lg:w-[80%] lg:pl-10">
-          {menu.menuItems.map((item, index) => (
-            <MenuCard key={index} food={item} />
-          ))}
+          {menu.menuItems
+            .filter(
+              (item) =>
+                selectedCategory === "" ||
+                item.foodCategory?.name === selectedCategory
+            )
+            .map((item, index) => (
+              <MenuCard key={index} food={item} />
+            ))}
         </div>
       </section>
     </div>
