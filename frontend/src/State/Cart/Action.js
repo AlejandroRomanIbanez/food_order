@@ -80,7 +80,8 @@ export const updateCartItem = (reqData) => async (dispatch) => {
       },
     });
     dispatch({ type: UPDATE_CART_ITEM_SUCCESS, payload: data });
-    console.log("Added to Favorites", data);
+    console.log("Updated Cart sucessfully", data);
+    dispatch(findCart(reqData.jwt));
   } catch (err) {
     dispatch({ type: UPDATE_CART_ITEM_FAILURE, payload: err });
     console.log("error", err);
@@ -99,6 +100,7 @@ export const removeCartItem =
       });
       dispatch({ type: REMOVE_CART_ITEM_SUCCESS, payload: cartItemId });
       console.log("Deleted CartItem sucessfully", data);
+      dispatch(findCart(jwt));
     } catch (err) {
       dispatch({ type: REMOVE_CART_ITEM_FAILURE, payload: err });
       console.log("error", err);

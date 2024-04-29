@@ -31,7 +31,7 @@ const CartItem = ({ item }) => {
   return (
     <div className="px-5">
       <div className="lg:flex items-center lg:spaces-x-5">
-        <div>
+        <div className="mr-4">
           <img
             className="w-[5rem] h-[5rem] object-cover"
             src={item.food.images[0]}
