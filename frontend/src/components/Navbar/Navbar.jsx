@@ -13,6 +13,7 @@ export const Navbar = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { auth, cart } = useSelector((store) => store);
+  console.log("cartNavbar", cart);
 
   const handleLogin = () => {
     navigate("/account/login");
