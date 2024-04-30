@@ -16,4 +16,5 @@ public class RestaurantDto {
 
     private String description;
     private Long id;
+    private Boolean open;
 }
