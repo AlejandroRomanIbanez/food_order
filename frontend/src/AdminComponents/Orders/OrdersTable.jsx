@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   AvatarGroup,
@@ -46,14 +46,8 @@ const OrdersTable = ({ filterValue }) => {
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
   const { restaurant, restaurantOrder } = useSelector((store) => store);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState({});
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   useEffect(() => {
     dispatch(
@@ -65,9 +59,17 @@ const OrdersTable = ({ filterValue }) => {
     );
   }, []);
 
+  const handleClick = (event, orderId) => {
+    setAnchorEl({ ...anchorEl, [orderId]: event.currentTarget });
+  };
+
+  const handleClose = (orderId) => {
+    setAnchorEl({ ...anchorEl, [orderId]: null });
+  };
+
   const handleUpdateOrderStatus = (orderId, orderStatus) => {
     dispatch(updateOrderStatus({ orderId, orderStatus, jwt }));
-    handleClose();
+    handleClose(orderId);
   };
 
   return (
@@ -105,8 +107,8 @@ const OrdersTable = ({ filterValue }) => {
                     </TableCell>
                     <TableCell align="right">
                       <AvatarGroup>
-                        {order.items?.map((orderItem) => (
-                          <Avatar src={orderItem.food.images[0]} />
+                        {order.items?.map((orderItem, index) => (
+                          <Avatar key={index} src={orderItem.food.images[0]} />
                         ))}
                       </AvatarGroup>
                     </TableCell>
@@ -115,15 +117,15 @@ const OrdersTable = ({ filterValue }) => {
                     </TableCell>
                     <TableCell align="right">{order.totalPrice}€</TableCell>
                     <TableCell align="right">
-                      {order.items.map((orderItem) => (
-                        <p>{orderItem.food?.name}</p>
+                      {order.items.map((orderItem, index) => (
+                        <p key={index}>{orderItem.food?.name}</p>
                       ))}
                     </TableCell>
                     <TableCell align="right">
-                      {order.items.map((orderItem) => (
-                        <div>
-                          {orderItem.ingredients?.map((ingredient) => (
-                            <Chip label={ingredient}></Chip>
+                      {order.items.map((orderItem, index) => (
+                        <div key={index}>
+                          {orderItem.ingredients?.map((ingredient, index) => (
+                            <Chip key={index} label={ingredient}></Chip>
                           ))}
                         </div>
                       ))}
@@ -131,25 +133,27 @@ const OrdersTable = ({ filterValue }) => {
                     <TableCell align="right">{order.orderStatus}</TableCell>
                     <TableCell align="right">
                       <Button
-                        id="basic-button"
-                        aria-controls={open ? "basic-menu" : undefined}
+                        id={`basic-button-${order.id}`}
+                        aria-controls={`basic-menu-${order.id}`}
                         aria-haspopup="true"
                         aria-expanded={open ? "true" : undefined}
-                        onClick={handleClick}
+                        onClick={(e) => handleClick(e, order.id)}
                       >
                         Update
                       </Button>
                       <Menu
-                        id="basic-menu"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
+                        id={`basic-menu-${order.id}`}
+                        anchorEl={anchorEl[order.id]}
+                        open={Boolean(anchorEl[order.id])}
+                        onClose={() => handleClose(order.id)}
                         MenuListProps={{
-                          "aria-labelledby": "basic-button",
+                          "aria-labelledby": `basic-button-${order.id}`,
                         }}
                       >
+                        {console.log("orderAdmin", order)}
                         {orderStatus.map((status) => (
                           <MenuItem
+                            key={status.value}
                             onClick={() =>
                               handleUpdateOrderStatus(order.id, status.value)
                             }
