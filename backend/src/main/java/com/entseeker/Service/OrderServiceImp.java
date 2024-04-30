@@ -22,9 +22,6 @@ public class OrderServiceImp implements OrderService {
     private OrderItemRepository orderItemRepository;
 
     @Autowired
-    private AddressRepository addressRepository;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -37,14 +34,7 @@ public class OrderServiceImp implements OrderService {
     @Override
     public Order createOrder(OrderRequest order, User user) throws Exception {
 
-        Address shippingAddress = order.getDeliveryAddress();
-
-        Address savedAddress = addressRepository.save(shippingAddress);
-
-        if(!user.getAddresses().contains(savedAddress)){
-            user.getAddresses().add(savedAddress);
-            userRepository.save(user);
-        }
+        DeliveryAddress shippingAddress = order.getDeliveryAddress();
 
         Restaurant restaurant = restaurantService.findRestaurantById(order.getRestaurantId());
 
@@ -52,7 +42,7 @@ public class OrderServiceImp implements OrderService {
         createdOrder.setCustomer(user);
         createdOrder.setCreatedAt(new Date());
         createdOrder.setOrderStatus("PENDING");
-        createdOrder.setDeliveryAddress(savedAddress);
+        createdOrder.setDeliveryAddress(shippingAddress);
         createdOrder.setRestaurant(restaurant);
 
         Cart cart = cartService.findCartByUserId(user.getId());

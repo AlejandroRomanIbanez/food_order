@@ -2,13 +2,16 @@ package com.entseeker.Service;
 
 import com.entseeker.config.JwtProvider;
 import com.entseeker.model.Address;
+import com.entseeker.model.Order;
 import com.entseeker.model.User;
 import com.entseeker.repository.AddressRepository;
+import com.entseeker.repository.OrderRepository;
 import com.entseeker.repository.UserRepository;
 import com.entseeker.request.UserAddressRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,6 +25,9 @@ public class UserServiceImp implements UserService{
 
     @Autowired
     private AddressRepository addressRespository;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Override
     public User findUserByJwtToken(String jwt) throws Exception {
@@ -67,6 +73,7 @@ public class UserServiceImp implements UserService{
             Address address = optionalAddress.get();
             user.getAddresses().remove(address);
             userRepository.save(user);
+            addressRespository.delete(address);
         } else {
             throw new Exception("Address not found");
         }

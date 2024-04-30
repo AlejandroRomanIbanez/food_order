@@ -13,7 +13,7 @@ const Address = () => {
         Your Saved Addresses
       </h1>
       <div className="flex gap-5 flex-wrap justify-center">
-        {auth.user?.addresses.map((address) => (
+        {auth.user?.addresses?.map((address) => (
           <AddressCard address={address} showButton={true} />
         ))}
         <NewAddressCard />

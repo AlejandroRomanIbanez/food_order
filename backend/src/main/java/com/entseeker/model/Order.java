@@ -33,8 +33,8 @@ public class Order {
 
     private Date createdAt;
 
-    @ManyToOne
-    private Address deliveryAddress;
+    @Embedded
+    private DeliveryAddress deliveryAddress;
 
     @OneToMany
     private List<OrderItem> items;
