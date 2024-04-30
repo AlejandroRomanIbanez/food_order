@@ -9,18 +9,26 @@ const Orders = () => {
   const { auth, cart, order } = useSelector((store) => store);
   const jwt = localStorage.getItem("jwt");
   const dispatch = useDispatch();
+  const groupedOrders = {};
 
   useEffect(() => {
     dispatch(getUsersOrders(jwt));
   }, [auth.jwt]);
 
+  order.orders.forEach((order) => {
+    if (!groupedOrders[order.id]) {
+      groupedOrders[order.id] = [];
+    }
+    groupedOrders[order.id].push(order);
+  });
+
   return (
     <div className="flex items-center flex-col">
       <h1 className="text-xl text-center py-7 font-semibold">My Orders</h1>
       <div className="space-y-5 w-full lg:w-1/2">
-        {order.orders.map((order) =>
-          order.items.map((item) => <OrderCard item={item} order={order} />)
-        )}
+        {Object.keys(groupedOrders).map((orderId) => (
+          <OrderCard key={orderId} orders={groupedOrders[orderId]} />
+        ))}
       </div>
     </div>
   );
