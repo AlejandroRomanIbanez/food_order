@@ -10,4 +10,6 @@ public interface UserService {
     public User findUserByEmail(String email) throws Exception;
 
     public Address addAddress(UserAddressRequest userAddressRequest, String jwt) throws Exception;
+
+    public void deleteAddress(Long addressId, String jwt) throws Exception;
 }

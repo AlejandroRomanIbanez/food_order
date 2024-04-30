@@ -4,6 +4,7 @@ import com.entseeker.Service.UserService;
 import com.entseeker.model.Address;
 import com.entseeker.model.User;
 import com.entseeker.request.UserAddressRequest;
+import com.entseeker.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,4 +30,15 @@ public class UserController {
         Address newAddress = userService.addAddress(userAddressRequest, jwt);
         return new ResponseEntity<>(newAddress, HttpStatus.OK);
     }
+
+    @DeleteMapping("/deleteAddress/{addressId}")
+    public ResponseEntity<MessageResponse> deleteAddress(@PathVariable("addressId") Long addressId,
+                                                         @RequestHeader("Authorization") String jwt) throws Exception {
+        userService.deleteAddress(addressId, jwt);
+
+        MessageResponse messageResponse = new MessageResponse();
+        messageResponse.setMessage("Address deleted successfully");
+
+        return new ResponseEntity<>(messageResponse, HttpStatus.OK);
+                                               }
 }

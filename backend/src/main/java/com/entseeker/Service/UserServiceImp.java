@@ -9,6 +9,8 @@ import com.entseeker.request.UserAddressRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserServiceImp implements UserService{
 
@@ -54,5 +56,19 @@ public class UserServiceImp implements UserService{
         userRepository.save(user);
 
         return address;
+    }
+
+    @Override
+    public void deleteAddress(Long addressId, String jwt) throws Exception {
+        User user = findUserByJwtToken(jwt);
+
+        Optional<Address> optionalAddress = addressRespository.findById(addressId);
+        if(optionalAddress.isPresent()) {
+            Address address = optionalAddress.get();
+            user.getAddresses().remove(address);
+            userRepository.save(user);
+        } else {
+            throw new Exception("Address not found");
+        }
     }
 }
