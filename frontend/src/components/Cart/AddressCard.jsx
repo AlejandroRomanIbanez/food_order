@@ -3,18 +3,21 @@ import Cart from "./Cart";
 import HomeIcon from "@mui/icons-material/Home";
 import { Button, Card } from "@mui/material";
 
-const AddressCard = ({ item, showButton, handleSelectAddress }) => {
+const AddressCard = ({ address, showButton, handleSelectAddress }) => {
   return (
     <Card className="flex gap-5 w-64 p-5">
       <HomeIcon />
       <div className="space-y-3 text-gray-500">
         <h1 className="font-semibold text-lg text-white">Home</h1>
-        <p>Calle Cid Campeador, 3, 2A, 03400, Alicante, Spain</p>
+        <p>
+          {address.streetAddress}, {address.pincode}, {address.city},
+          {address.state}
+        </p>
         {showButton && (
           <Button
             variant="outlined"
             fullWidth
-            onClick={() => handleSelectAddress(item)}
+            onClick={() => handleSelectAddress(address)}
           >
             Select
           </Button>
