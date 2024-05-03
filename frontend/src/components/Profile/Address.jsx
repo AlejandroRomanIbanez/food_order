@@ -14,7 +14,7 @@ const Address = () => {
       </h1>
       <div className="flex gap-5 flex-wrap justify-center">
         {auth.user?.addresses?.map((address) => (
-          <AddressCard address={address} showButton={true} />
+          <AddressCard address={address} showButton={false} />
         ))}
         <NewAddressCard />
       </div>

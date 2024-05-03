@@ -9,4 +9,5 @@ public class OrderRequest {
 
     private Long RestaurantId;
     private DeliveryAddress deliveryAddress;
+    private Long totalPrice;
 }

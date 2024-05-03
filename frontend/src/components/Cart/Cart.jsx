@@ -4,15 +4,36 @@ import CartItem from "./CartItem";
 import AddressCard from "./AddressCard";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import NewAddressCard from "./NewAddressCard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { createOrder } from "../../State/Order/Action";
+import restaurantReducer from "./../../State/Restaurant/Reducer";
 
 const Cart = () => {
-  const { cart } = useSelector((store) => store);
+  const { cart, auth } = useSelector((store) => store);
+  const dispatch = useDispatch();
+  const restaurantId = cart.cartItems[0]?.food.restaurant.id;
+  const jwt = localStorage.getItem("jwt");
   const taxCharge = 5;
   const deliverCharge = 4;
-  const createOrderUsingSelectedAddress = () => {
-    console.log("createOrderUsingSelectedAddress");
+  const calculatedTotalPrice = cart?.cart?.total + taxCharge + deliverCharge;
+  console.log("totalPrice: ", calculatedTotalPrice);
+  console.log("AuthCart: ", auth);
+  const createOrderUsingSelectedAddress = (address) => {
+    if (calculatedTotalPrice) {
+      dispatch(
+        createOrder({
+          order: {
+            address: address,
+            restaurantId: restaurantId,
+          },
+          totalPrice: calculatedTotalPrice,
+          jwt: jwt,
+        })
+      );
+    }
   };
+
+  console.log("Cart: ", cart);
 
   return (
     <div>
@@ -53,10 +74,10 @@ const Cart = () => {
               Choose Delivery Address
             </h1>
             <div className="flex gap-5 flex-wrap justify-center">
-              {[1, 1, 1, 1, 1].map((item) => (
+              {auth.user?.addresses?.map((address) => (
                 <AddressCard
-                  handleSelectAddress={createOrderUsingSelectedAddress}
-                  item={item}
+                  handleSelectAddress={() => createOrderUsingSelectedAddress()}
+                  address={address}
                   showButton={true}
                 />
               ))}

@@ -34,10 +34,21 @@ public class OrderController {
                                                        @RequestHeader("Authorization") String jwt) throws Exception {
 
         User user = userService.findUserByJwtToken(jwt);
-        Order order = orderService.createOrder(req, user);
-        PaymentResponse response = paymentService.createPaymentLink(order);
+        PaymentResponse response = paymentService.createPaymentLink(req, req.getTotalPrice());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/payment/success/{id}")
+    public ResponseEntity<Order> paymentSuccess(@PathVariable("id") String paymentId,
+                                                 @RequestHeader("Authorization") String jwt) throws Exception {
+
+        User user = userService.findUserByJwtToken(jwt);
+
+        OrderRequest orderReq = orderService.retrieveOrderRequest(paymentId);
+        Order order = orderService.createOrder(orderReq, user);
+
+        return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
     @GetMapping("/order/user")
