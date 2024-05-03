@@ -24,9 +24,6 @@ export const createOrder = (reqData) => async (dispatch) => {
         headers: {
           Authorization: `Bearer ${reqData.jwt}`,
         },
-        params: {
-          success_url: "http://localhost:3000/payment/success",
-        },
       }
     );
     if (data.paymentUrl) {
@@ -40,21 +37,23 @@ export const createOrder = (reqData) => async (dispatch) => {
   }
 };
 
-export const paymentSuccess = (paymentId, jwt) => async (dispatch) => {
-  dispatch({ type: PAYMENT_SUCCESS_REQUEST });
-  try {
-    const { data } = await api.get(`api/payment/success/${paymentId}`, {
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-      },
-    });
-    dispatch({ type: PAYMENT_SUCCESS_SUCCESS, payload: data });
-    console.log("Payment Success data", data);
-  } catch (err) {
-    dispatch({ type: PAYMENT_SUCCESS_FAILURE, payload: err });
-    console.log("error", err);
-  }
-};
+export const paymentSuccess =
+  ({ paymentId, jwt }) =>
+  async (dispatch) => {
+    dispatch({ type: PAYMENT_SUCCESS_REQUEST });
+    try {
+      const { data } = await api.get(`api/payment/success/${paymentId}`, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+      dispatch({ type: PAYMENT_SUCCESS_SUCCESS, payload: data });
+      console.log("Payment Success data", data);
+    } catch (err) {
+      dispatch({ type: PAYMENT_SUCCESS_FAILURE, payload: err });
+      console.log("error", err);
+    }
+  };
 
 export const getUsersOrders = (jwt) => async (dispatch) => {
   dispatch({ type: GET_USERS_ORDERS_REQUEST });

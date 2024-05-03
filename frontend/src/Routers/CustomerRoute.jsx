@@ -21,7 +21,7 @@ const CustomerRoute = () => {
         />
         <Route path="/cart" element={<Cart />} />
         <Route path="/profile/*" element={<Profile />} />
-        <Route path="/payment/success/:id" element={<PaymentSucess />} />
+        <Route path="/payment/success/:paymentId" element={<PaymentSucess />} />
       </Routes>
       <Auth />
     </div>

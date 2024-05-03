@@ -1,10 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import { Button, Card } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { paymentSuccess } from "../../State/Order/Action";
+import { clearCart } from "../../State/Cart/Action";
 
 const PaymentSucess = () => {
   const navigate = useNavigate();
+  const { order, cart } = useSelector((store) => store);
+  const jwt = localStorage.getItem("jwt");
+  const { paymentId } = useParams();
+  const dispatch = useDispatch();
+  console.log("sucessOrder: ", order);
+
+  useEffect(() => {
+    const fetchPaymentStatus = async () => {
+      try {
+        const paymentResponse = await dispatch(
+          paymentSuccess({
+            paymentId: paymentId,
+            jwt: jwt,
+          })
+        );
+        if (paymentResponse && paymentResponse.id) {
+          dispatch(clearCart(jwt)); // Clear cart only if payment is successful
+        }
+      } catch (error) {
+        console.error("Error processing payment: ", error);
+      }
+    };
+    fetchPaymentStatus();
+  }, []);
 
   return (
     <div className="min-h-screen px-5">
